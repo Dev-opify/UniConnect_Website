@@ -1,6 +1,6 @@
 import os
 import google.generativeai as genai
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS  # Import CORS
 
 genai.configure(api_key="AIzaSyBT0VyCSQy4Qd-KzXctalxUtA2d7ypdMq8")
