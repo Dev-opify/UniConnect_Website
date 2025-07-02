@@ -34,14 +34,13 @@ CORS(app)  # Enable CORS for all routes
 
 @app.route('/')
 def index():
-    return "🚀 Chatbot API is running! Send POST requests to /chat"
+    return render_template('index.html')
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_message = request.json.get("message")
-    response = model.generate_content(user_message)
-    bot_reply = response.text
-    return jsonify({"response": bot_reply})
+    user_input = request.json.get("message")
+    bot_reply = f"you said: {user_input}"
+    return jsonify({"reply": bot_reply})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))  # Use environment PORT or fallback to 5000
