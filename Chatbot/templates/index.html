@@ -70,53 +70,49 @@
 
 <script>
   /**
-   * Main function to handle sending user messages
-   * and receiving chatbot responses.
+   * Sends the user's message to the server and displays the response.
    */
   async function sendMessage() {
     const userInput = document.getElementById('user-input').value.trim();
-
-    // Prevent sending empty messages
     if (!userInput) return;
 
     const chatBox = document.getElementById('chat-box');
-
-    // Display user's message in the chat area
     chatBox.innerHTML += `<div class="user-message">${userInput}</div>`;
-    
-    // Clear the input field
     document.getElementById('user-input').value = '';
 
-    // Show typing indicator while waiting for bot's response
     chatBox.innerHTML += `<div class="typing-indicator">Bot is typing...</div>`;
     chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
-      // Send POST request to backend /chat route
       const response = await fetch('/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userInput })
       });
 
-      // Parse JSON response
       const data = await response.json();
-      const botReply = data.reply;  // Access the 'reply' key returned by Flask
+      const botReply = data.reply;
 
-      // Remove typing indicator
       document.querySelector('.typing-indicator').remove();
-
-      // Display bot's reply in chat area
       chatBox.innerHTML += `<div class="bot-message">${botReply}</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
 
     } catch (error) {
-      // Remove typing indicator and show error message if API call fails
       document.querySelector('.typing-indicator').remove();
       chatBox.innerHTML += `<div class="bot-message">Error contacting chatbot.</div>`;
       console.error(error);
     }
   }
+
+  /**
+   * Listen for Enter key press on the input field to send the message.
+   */
+  document.getElementById('user-input').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      sendMessage();
+    }
+  });
 </script>
 
 </body>
