@@ -39,7 +39,17 @@ def index():
 @app.route('/chat', methods=['POST'])
 def chat():
     user_input = request.json.get("message")
-    bot_reply = f"you said: {user_input}"
+
+    try:
+        # Send user input to Gemini model
+        response = model.generate_content(user_input)
+
+        bot_reply = response.text.strip() if response.text else "I'm not sure how to answer that."
+
+    except Exception as e:
+        print(f"Error: {e}")
+        bot_reply = "Sorry, I encountered an issue. Please try again."
+
     return jsonify({"reply": bot_reply})
 
 if __name__ == "__main__":
