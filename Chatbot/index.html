@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Guidance Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .chat-container {
+      width: 300px;
+      margin: 0 auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fafafa;
+    }
+    .chat-box {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      padding: 5px;
+    }
+    .user-message, .bot-message {
+      margin: 5px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .user-message {
+      background-color: #d1f1d1;
+      text-align: right;
+    }
+    .bot-message {
+      background-color: #f0f0f0;
+      text-align: left;
+    }
+    /* Adding more subtle animations for smooth conversation */
+    .typing-indicator {
+      color: #888;
+      font-style: italic;
+      padding-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div id="chat-box" class="chat-box"></div>
+  <input type="text" id="user-input" placeholder="Type a message..." style="width: 100%; padding: 10px; border-radius: 5px;">
+  <button onclick="sendMessage()" style="width: 100%; padding: 10px; border-radius: 5px; background-color: #4CAF50; color: white;">Send</button>
+</div>
+
+<script>
+  // Function to send the user input to the backend and get the response
+  async function sendMessage() {
+    const userInput = document.getElementById('user-input').value;
+    
+    if (!userInput.trim()) return; // Don't send empty messages
+    
+    // Display the user's message in the chat
+    const chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML += `<div class="user-message">${userInput}</div>`;
+    
+    // Clear the input field
+    document.getElementById('user-input').value = '';
+    
+    // Show a typing indicator for the bot
+    chatBox.innerHTML += `<div class="typing-indicator">Bot is typing...</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Send the user input to the Flask server
+    const response = await fetch('http://localhost:5000/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: userInput })
+    });
+
+    // Parse the response from the server
+    const data = await response.json();
+    const botReply = data.response;
+
+    // Remove the typing indicator
+    const typingIndicator = document.querySelector('.typing-indicator');
+    if (typingIndicator) typingIndicator.remove();
+
+    // Display the bot's response in the chat
+    chatBox.innerHTML += `<div class="bot-message">${botReply}</div>`;
+    
+    // Scroll to the bottom of the chat
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+</script>
+
+</body>
+</html>
