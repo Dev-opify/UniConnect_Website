@@ -52,3 +52,98 @@ navLinks.forEach(link => {
 
 // Initialize with Home tab active
 document.getElementById('homeContent').classList.add('active');
+
+const chatbotToggle = document.getElementById('chatbot-toggle');
+const chatbotWindow = document.getElementById('chatbot-window');
+const chatMessages = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+const sendBtn = document.getElementById('send-btn');
+const chatClose = document.getElementById('chat-close');
+
+// Your deployed API link
+const chatbotApiUrl = "https://uniconnect-rltc.onrender.com/chat";
+
+chatbotToggle.addEventListener('click', () => {
+  chatbotWindow.style.display = chatbotWindow.style.display === 'none' ? 'flex' : 'none';
+});
+
+chatClose.addEventListener('click', () => {
+  chatbotWindow.style.display = 'none';
+});
+
+sendBtn.addEventListener('click', sendMessage);
+
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+function getCurrentTime() {
+  const now = new Date();
+  return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+async function sendMessage() {
+  const message = chatInput.value.trim();
+  if (!message) return;
+
+  const userTime = getCurrentTime();
+  chatMessages.innerHTML += `<div class="user-msg">${message} <span class="timestamp">${userTime}</span></div>`;
+  chatInput.value = '';
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+    // Show Typing Indicator
+  const typingElem = document.createElement('div');
+  typingElem.className = 'bot-msg typing';
+  typingElem.innerHTML = `<span class="dots"></span>`;
+  chatMessages.appendChild(typingElem);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  try {
+    const response = await fetch(chatbotApiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message })
+    });
+    const data = await response.json();
+        // Remove typing indicator
+    typingElem.remove();
+
+    const botTime = getCurrentTime();
+    chatMessages.innerHTML += `<div class="bot-msg">${data.reply} <span class="timestamp">${botTime}</span></div>`;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  } catch (error) {
+    typingElem.remove();
+    chatMessages.innerHTML += `<div class="bot-msg">Error contacting chatbot.</div>`;
+  }
+}
+
+const chatWindow = document.getElementById('chatbot-window');
+const chatHeader = document.getElementById('chat-header');
+
+let isDragging = false;
+let offsetX, offsetY;
+
+chatHeader.style.cursor = "move";
+
+chatHeader.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  offsetX = e.clientX - chatWindow.getBoundingClientRect().left;
+  offsetY = e.clientY - chatWindow.getBoundingClientRect().top;
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (isDragging) {
+    chatWindow.style.left = (e.clientX - offsetX) + 'px';
+    chatWindow.style.top = (e.clientY - offsetY) + 'px';
+    chatWindow.style.bottom = 'auto';
+    chatWindow.style.right = 'auto';
+    chatWindow.style.position = 'fixed';
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+});
+
+
+
