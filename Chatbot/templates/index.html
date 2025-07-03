@@ -1,119 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Career Guidance Chatbot</title>
-  
-  <style>
-    /* Basic page styling */
-    body {
-      font-family: Arial, sans-serif;
-    }
-
-    /* Chat container box styling */
-    .chat-container {
-      width: 300px;
-      margin: 0 auto;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #fafafa;
-    }
-
-    /* Chat message display area */
-    .chat-box {
-      max-height: 400px;
-      overflow-y: auto;
-      margin-bottom: 10px;
-      padding: 5px;
-    }
-
-    /* Styling for user and bot messages */
-    .user-message, .bot-message {
-      margin: 5px;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    
-    .user-message {
-      background-color: #d1f1d1;
-      text-align: right;
-    }
-
-    .bot-message {
-      background-color: #f0f0f0;
-      text-align: left;
-    }
-
-    /* Typing indicator style */
-    .typing-indicator {
-      color: #888;
-      font-style: italic;
-      padding-left: 10px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ana - Chatbot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  <div id="chatbox">
+    <div class="header">💬 Ana - Your Mentor Bot</div>
+    <div id="chat-log"></div>
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Ask me anything..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
 
-<!-- Chatbot container -->
-<div class="chat-container">
-  <!-- Chat messages will appear here -->
-  <div id="chat-box" class="chat-box"></div>
-
-  <!-- User input field -->
-  <input type="text" id="user-input" placeholder="Type a message..." style="width: 100%; padding: 10px; border-radius: 5px;">
-
-  <!-- Send button -->
-  <button onclick="sendMessage()" style="width: 100%; padding: 10px; border-radius: 5px; background-color: #4CAF50; color: white;">Send</button>
-</div>
-
-<script>
-  /**
-   * Sends the user's message to the server and displays the response.
-   */
-  async function sendMessage() {
-    const userInput = document.getElementById('user-input').value.trim();
-    if (!userInput) return;
-
-    const chatBox = document.getElementById('chat-box');
-    chatBox.innerHTML += `<div class="user-message">${userInput}</div>`;
-    document.getElementById('user-input').value = '';
-
-    chatBox.innerHTML += `<div class="typing-indicator">Bot is typing...</div>`;
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    try {
-      const response = await fetch('/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userInput })
-      });
-
-      const data = await response.json();
-      const botReply = data.reply;
-
-      document.querySelector('.typing-indicator').remove();
-      chatBox.innerHTML += `<div class="bot-message">${botReply}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-    } catch (error) {
-      document.querySelector('.typing-indicator').remove();
-      chatBox.innerHTML += `<div class="bot-message">Error contacting chatbot.</div>`;
-      console.error(error);
-    }
-  }
-
-  /**
-   * Listen for Enter key press on the input field to send the message.
-   */
-  document.getElementById('user-input').addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      sendMessage();
-    }
-  });
-</script>
-
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
