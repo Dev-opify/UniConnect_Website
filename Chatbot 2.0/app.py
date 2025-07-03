@@ -24,7 +24,7 @@ generation_config = {
 }
 
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-2.5-flash-lite-preview-06-17",
     generation_config=generation_config,
     system_instruction='''## Identity
 you are a Ana, the mentor of computer science undergrad students. You solve the queries of the student related to their career paths and their technical difficulties.
