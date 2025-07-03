@@ -3,8 +3,7 @@ async function sendMessage(msg = null) {
   const message = msg || inputField.value.trim();
   if (!message) return;
 
-  const userTime = new Date().toLocaleString();
-  appendMessage("user", message, userTime);
+  appendMessage("user", message);
   inputField.value = "";
 
   // Show typing indicator
@@ -34,10 +33,10 @@ async function sendMessage(msg = null) {
   document.getElementById("typing").remove();
 
   const data = await response.json();
-  appendMessage("bot", data.reply, data.timestamp);
+  appendMessage("bot", data.reply);
 }
 
-function appendMessage(sender, message, timestamp = null) {
+function appendMessage(sender, message) {
   const chatBox = document.getElementById("chat-box");
 
   const wrapper = document.createElement("div");
@@ -46,7 +45,7 @@ function appendMessage(sender, message, timestamp = null) {
   // Add avatar for bot
   if (sender === "bot") {
     const avatar = document.createElement("img");
-    avatar.src = "/static/img/ana-avatar.png"; 
+    avatar.src = "/static/img/ana-avatar.png";
     avatar.alt = "Ana Avatar";
     avatar.classList.add("bot-avatar");
     wrapper.appendChild(avatar);
@@ -76,14 +75,6 @@ function appendMessage(sender, message, timestamp = null) {
     messageDiv.innerHTML = renderMarkdown(message);
   }
 
-  // Add timestamp if available
-  if (timestamp) {
-    const timeSpan = document.createElement("span");
-    timeSpan.classList.add("timestamp");
-    timeSpan.innerText = timestamp;
-    messageDiv.appendChild(timeSpan);
-  }
-
   wrapper.appendChild(messageDiv);
   chatBox.appendChild(wrapper);
   chatBox.scrollTop = chatBox.scrollHeight;
@@ -95,7 +86,7 @@ function renderMarkdown(text) {
     /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
     '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
   );
+
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   return text;
 }
-
