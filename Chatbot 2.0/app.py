@@ -1,10 +1,12 @@
 GEMINI_API_KEY = "AIzaSyBT0VyCSQy4Qd-KzXctalxUtA2d7ypdMq8"
 
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 import google.generativeai as genai
 import os
 
 app = Flask(__name__)
+CORS(app)
 genai.configure(api_key=GEMINI_API_KEY)
 
 generation_config = {
