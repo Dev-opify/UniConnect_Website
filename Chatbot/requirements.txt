@@ -1,5 +1,0 @@
-google-generativeai
-Pillow
-Flask
-gunicorn
-flask-cors
