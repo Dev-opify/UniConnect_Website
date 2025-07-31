@@ -1,149 +1,109 @@
-// Theme Toggle Functionality
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-const icon = themeToggle.querySelector('i');
-const text = themeToggle.querySelector('span');
+let currentDate = new Date();
+let selectedDate = null;
 
-// Check for saved theme preference
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme === 'dark') {
-    body.classList.add('dark-mode');
-    icon.classList.remove('fa-moon');
-    icon.classList.add('fa-sun');
-    text.textContent = 'Light Mode';
+function toggleCalendar() {
+    const popup = document.getElementById('calendarPopup');
+    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    if (popup.style.display === 'block') {
+        generateCalendar();
+    }
 }
 
-themeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    if (body.classList.contains('dark-mode')) {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-        text.textContent = 'Light Mode';
-        localStorage.setItem('theme', 'dark');
-    } else {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-        text.textContent = 'Dark Mode';
-        localStorage.setItem('theme', 'light');
+function generateCalendar() {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    document.getElementById('monthYear').textContent =
+        monthNames[currentDate.getMonth()] + ' ' + currentDate.getFullYear();
+
+    const grid = document.getElementById('calendarGrid');
+    grid.innerHTML = '';
+
+    dayNames.forEach(day => {
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'calendar-day-header';
+        dayHeader.textContent = day;
+        grid.appendChild(dayHeader);
+    });
+
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+    for (let i = 0; i < 42; i++) {
+        const day = new Date(startDate);
+        day.setDate(startDate.getDate() + i);
+
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day';
+        dayElement.textContent = day.getDate();
+
+        if (day.getMonth() !== currentDate.getMonth()) {
+            dayElement.classList.add('other-month');
+        }
+
+        if (selectedDate && day.toDateString() === selectedDate.toDateString()) {
+            dayElement.classList.add('selected');
+        }
+
+        dayElement.onclick = () => selectDate(day);
+        grid.appendChild(dayElement);
+    }
+}
+
+function selectDate(date) {
+    selectedDate = new Date(date);
+    const formattedDate = selectedDate.toLocaleDateString('en-GB');
+    document.getElementById('dateOfBirth').value = formattedDate;
+    document.getElementById('calendarPopup').style.display = 'none';
+    generateCalendar();
+}
+
+function previousMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    generateCalendar();
+}
+
+function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    generateCalendar();
+}
+
+document.addEventListener('click', function (event) {
+    const popup = document.getElementById('calendarPopup');
+    const calendarBtn = document.querySelector('.calendar-btn');
+
+    if (!popup.contains(event.target) && !calendarBtn.contains(event.target)) {
+        popup.style.display = 'none';
     }
 });
 
-// Tab Switching Functionality
-const navLinks = document.querySelectorAll('nav a');
-const tabContents = document.querySelectorAll('.tab-content');
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
 
-        // Remove active class from all links and tab contents
-        navLinks.forEach(l => l.classList.remove('active'));
-        tabContents.forEach(content => content.classList.remove('active'));
+    const submitBtn = document.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Registering...';
+    submitBtn.style.background = '#27ae60';
 
-        // Add active class to clicked link
-        link.classList.add('active');
+    setTimeout(() => {
+        alert('Registration successful!\n\nSubmitted data:\n' + JSON.stringify(data, null, 2));
+        submitBtn.textContent = originalText;
+        submitBtn.style.background = '';
+    }, 1500);
+});
 
-        // Show corresponding tab content
-        const target = link.getAttribute('href').substring(1);
-        const content = document.getElementById(`${target}Content`);
-        if(content) content.classList.add('active');
+document.querySelectorAll('input, select').forEach(input => {
+    input.addEventListener('focus', function () {
+        this.parentElement.style.transform = 'scale(1.02)';
+    });
+
+    input.addEventListener('blur', function () {
+        this.parentElement.style.transform = 'scale(1)';
     });
 });
-
-// Initialize with Home tab active
-document.getElementById('homeContent').classList.add('active');
-
-const chatbotToggle = document.getElementById('chatbot-toggle');
-const chatbotWindow = document.getElementById('chatbot-window');
-const chatMessages = document.getElementById('chat-messages');
-const chatInput = document.getElementById('chat-input');
-const sendBtn = document.getElementById('send-btn');
-const chatClose = document.getElementById('chat-close');
-
-// Your deployed API link
-const chatbotApiUrl = "https://uniconnect-rltc.onrender.com/chat";
-
-chatbotToggle.addEventListener('click', () => {
-  chatbotWindow.style.display = chatbotWindow.style.display === 'none' ? 'flex' : 'none';
-});
-
-chatClose.addEventListener('click', () => {
-  chatbotWindow.style.display = 'none';
-});
-
-sendBtn.addEventListener('click', sendMessage);
-
-chatInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') sendMessage();
-});
-
-function getCurrentTime() {
-  const now = new Date();
-  return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-async function sendMessage() {
-  const message = chatInput.value.trim();
-  if (!message) return;
-
-  const userTime = getCurrentTime();
-  chatMessages.innerHTML += `<div class="user-msg">${message} <span class="timestamp">${userTime}</span></div>`;
-  chatInput.value = '';
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-    // Show Typing Indicator
-  const typingElem = document.createElement('div');
-  typingElem.className = 'bot-msg typing';
-  typingElem.innerHTML = `<span class="dots"></span>`;
-  chatMessages.appendChild(typingElem);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-
-  try {
-    const response = await fetch(chatbotApiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message })
-    });
-    const data = await response.json();
-        // Remove typing indicator
-    typingElem.remove();
-
-    const botTime = getCurrentTime();
-    chatMessages.innerHTML += `<div class="bot-msg">${data.reply} <span class="timestamp">${botTime}</span></div>`;
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-  } catch (error) {
-    typingElem.remove();
-    chatMessages.innerHTML += `<div class="bot-msg">Error contacting chatbot.</div>`;
-  }
-}
-
-const chatWindow = document.getElementById('chatbot-window');
-const chatHeader = document.getElementById('chat-header');
-
-let isDragging = false;
-let offsetX, offsetY;
-
-chatHeader.style.cursor = "move";
-
-chatHeader.addEventListener('mousedown', (e) => {
-  isDragging = true;
-  offsetX = e.clientX - chatWindow.getBoundingClientRect().left;
-  offsetY = e.clientY - chatWindow.getBoundingClientRect().top;
-});
-
-document.addEventListener('mousemove', (e) => {
-  if (isDragging) {
-    chatWindow.style.left = (e.clientX - offsetX) + 'px';
-    chatWindow.style.top = (e.clientY - offsetY) + 'px';
-    chatWindow.style.bottom = 'auto';
-    chatWindow.style.right = 'auto';
-    chatWindow.style.position = 'fixed';
-  }
-});
-
-document.addEventListener('mouseup', () => {
-  isDragging = false;
-});
-
-
-
