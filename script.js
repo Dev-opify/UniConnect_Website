@@ -1,3 +1,38 @@
+// Firebase configuration and imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDsNHMQKy4x2uYP2kdiNe_jbUeArpYjrbw",
+    authDomain: "uniconnect-a880a.firebaseapp.com",
+    projectId: "uniconnect-a880a",
+    storageBucket: "uniconnect-a880a.firebasestorage.app",
+    messagingSenderId: "358941920538",
+    appId: "1:358941920538:web:7b2da20230edcf1a61b0a3"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// DOM Elements
+const loginModal = document.getElementById('loginModal');
+const closeModal = document.getElementById('closeModal');
+const showRegister = document.getElementById('showRegister');
+const showLogin = document.getElementById('showLogin');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const loginFormElement = document.getElementById('loginFormElement');
+const registerFormElement = document.getElementById('registerFormElement');
+const userMenu = document.getElementById('userMenu');
+const userBtn = document.getElementById('userBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const logoutBtn = document.getElementById('logoutBtn');
+const userNameDisplay = document.getElementById('userNameDisplay');
+
 // Theme Toggle Functionality
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
@@ -53,6 +88,323 @@ navLinks.forEach(link => {
 // Initialize with Home tab active
 document.getElementById('homeContent').classList.add('active');
 
+// Modal functionality
+function showLoginModal() {
+    loginModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function hideLoginModal() {
+    loginModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal events
+closeModal.addEventListener('click', hideLoginModal);
+window.addEventListener('click', (e) => {
+    if (e.target === loginModal) {
+        hideLoginModal();
+    }
+});
+
+// Switch between login and register forms
+showRegister.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginForm.classList.add('hidden');
+    registerForm.classList.remove('hidden');
+});
+
+showLogin.addEventListener('click', (e) => {
+    e.preventDefault();
+    registerForm.classList.add('hidden');
+    loginForm.classList.remove('hidden');
+});
+
+// User menu dropdown
+userBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!userMenu.contains(e.target)) {
+        dropdownMenu.classList.remove('show');
+    }
+});
+
+// Utility functions
+function showError(elementId, message) {
+    const element = document.getElementById(elementId);
+    element.textContent = message;
+    setTimeout(() => {
+        element.textContent = '';
+    }, 5000);
+}
+
+function showSuccess(elementId, message) {
+    const element = document.getElementById(elementId);
+    element.textContent = message;
+    setTimeout(() => {
+        element.textContent = '';
+    }, 3000);
+}
+
+function setLoading(buttonId, isLoading) {
+    const button = document.getElementById(buttonId);
+    if (isLoading) {
+        button.innerHTML = '<span class="loading"></span>Processing...';
+        button.disabled = true;
+    } else {
+        button.innerHTML = buttonId === 'loginBtn' ? 'Login' : 'Sign Up';
+        button.disabled = false;
+    }
+}
+
+function validatePassword(password) {
+    if (password.length < 6) {
+        return "Password must be at least 6 characters long";
+    }
+    return null;
+}
+
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return "Please enter a valid email address";
+    }
+    return null;
+}
+
+// Update user interface with user data
+function updateUserInterface(user) {
+    const userName = user.displayName || user.email.split('@')[0];
+    const studentId = `STU${Date.now()}`;
+    
+    // Update header
+    userNameDisplay.textContent = userName;
+    
+    // Update sidebar
+    document.getElementById('sidebarUserName').textContent = userName;
+    document.getElementById('sidebarStudentId').textContent = `ID: ${studentId}`;
+    
+    // Update welcome message
+    document.getElementById('welcomeMessage').textContent = `Welcome back, ${userName}! Here's your academic overview for this week.`;
+    
+    // Store user data
+    localStorage.setItem('userLoggedIn', 'true');
+    localStorage.setItem('userName', userName);
+    localStorage.setItem('userEmail', user.email);
+    localStorage.setItem('userStudentId', studentId);
+}
+
+// Reset to guest interface
+function resetToGuestInterface() {
+    userNameDisplay.textContent = 'Guest';
+    document.getElementById('sidebarUserName').textContent = 'Guest User';
+    document.getElementById('sidebarStudentId').textContent = 'ID: Not logged in';
+    document.getElementById('welcomeMessage').textContent = 'Welcome to UniConnect! Please log in to access your personalized dashboard.';
+    
+    // Clear stored data
+    localStorage.removeItem('userLoggedIn');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userStudentId');
+    
+    // Show login modal
+    showLoginModal();
+}
+
+// Register form handler
+registerFormElement.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('registerName').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    // Clear previous messages
+    document.getElementById('registerError').textContent = '';
+    document.getElementById('registerSuccess').textContent = '';
+
+    // Validation
+    if (!name) {
+        showError('registerError', 'Please enter your full name');
+        return;
+    }
+
+    const emailError = validateEmail(email);
+    if (emailError) {
+        showError('registerError', emailError);
+        return;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+        showError('registerError', passwordError);
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showError('registerError', 'Passwords do not match');
+        return;
+    }
+
+    setLoading('registerBtn', true);
+
+    try {
+        // Create user account
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Update user profile with name
+        await updateProfile(user, {
+            displayName: name
+        });
+
+        // Store additional user data in Firestore
+        await setDoc(doc(db, "users", user.uid), {
+            name: name,
+            email: email,
+            createdAt: new Date().toISOString(),
+            studentId: `STU${Date.now()}`,
+            course: "Computer Science",
+            year: "2025"
+        });
+
+        showSuccess('registerSuccess', 'Account created successfully!');
+        
+        // Update UI and close modal
+        updateUserInterface(user);
+        setTimeout(() => {
+            hideLoginModal();
+            registerFormElement.reset();
+        }, 2000);
+
+    } catch (error) {
+        console.error('Registration error:', error);
+        let errorMessage = 'Registration failed. Please try again.';
+        
+        switch (error.code) {
+            case 'auth/email-already-in-use':
+                errorMessage = 'Email is already registered. Please use a different email.';
+                break;
+            case 'auth/weak-password':
+                errorMessage = 'Password is too weak. Please choose a stronger password.';
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'Invalid email address.';
+                break;
+        }
+        
+        showError('registerError', errorMessage);
+    } finally {
+        setLoading('registerBtn', false);
+    }
+});
+
+// Login form handler
+loginFormElement.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    // Clear previous messages
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('loginSuccess').textContent = '';
+
+    // Validation
+    const emailError = validateEmail(email);
+    if (emailError) {
+        showError('loginError', emailError);
+        return;
+    }
+
+    if (!password) {
+        showError('loginError', 'Please enter your password');
+        return;
+    }
+
+    setLoading('loginBtn', true);
+
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        showSuccess('loginSuccess', 'Login successful!');
+        
+        // Update UI and close modal
+        updateUserInterface(user);
+        setTimeout(() => {
+            hideLoginModal();
+            loginFormElement.reset();
+        }, 1500);
+
+    } catch (error) {
+        console.error('Login error:', error);
+        let errorMessage = 'Login failed. Please try again.';
+        
+        switch (error.code) {
+            case 'auth/user-not-found':
+                errorMessage = 'No account found with this email address.';
+                break;
+            case 'auth/wrong-password':
+                errorMessage = 'Incorrect password. Please try again.';
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'Invalid email address.';
+                break;
+            case 'auth/too-many-requests':
+                errorMessage = 'Too many failed attempts. Please try again later.';
+                break;
+            case 'auth/invalid-credential':
+                errorMessage = 'Invalid email or password. Please check your credentials.';
+                break;
+        }
+        
+        showError('loginError', errorMessage);
+    } finally {
+        setLoading('loginBtn', false);
+    }
+});
+
+// Logout functionality
+logoutBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    try {
+        await signOut(auth);
+        resetToGuestInterface();
+        dropdownMenu.classList.remove('show');
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
+});
+
+// Auth state observer
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in
+        updateUserInterface(user);
+    } else {
+        // User is signed out
+        resetToGuestInterface();
+    }
+});
+
+// Check if user is already logged in on page load
+window.addEventListener('load', () => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+        // Show login modal if no user is logged in
+        setTimeout(() => {
+            showLoginModal();
+        }, 1000);
+    }
+});
+
+// Chatbot functionality
 const chatbotToggle = document.getElementById('chatbot-toggle');
 const chatbotWindow = document.getElementById('chatbot-window');
 const chatMessages = document.getElementById('chat-messages');
@@ -145,6 +497,5 @@ document.addEventListener('mouseup', () => {
   isDragging = false;
 });
 
-// chatbot profile picture
+// Chatbot profile picture
 const botImage = './static/ana-avatar.png';
-
