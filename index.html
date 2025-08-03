@@ -6,74 +6,9 @@
     <title>UniConnect - Student Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="/graduation-cap.png" type="image/png">
+    <link rel="icon" href="/graduation-cap.png" type="image/png"></link>
 </head>
 <body>
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Welcome to UniConnect</h2>
-                <span class="close" id="closeModal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="auth-container">
-                    <!-- Login Form -->
-                    <div class="auth-form" id="loginForm">
-                        <h3><i class="fas fa-sign-in-alt"></i> Login</h3>
-                        <form id="loginFormElement">
-                            <div class="input-group">
-                                <input type="email" id="loginEmail" required>
-                                <label>Email</label>
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" id="loginPassword" required>
-                                <label>Password</label>
-                                <i class="fas fa-lock"></i>
-                            </div>
-                            <div id="loginError" class="error-message"></div>
-                            <div id="loginSuccess" class="success-message"></div>
-                            <button type="submit" class="auth-btn" id="loginBtn">Login</button>
-                            <p class="switch-auth">Don't have an account? <a href="#" id="showRegister">Sign Up</a></p>
-                        </form>
-                    </div>
-
-                    <!-- Register Form -->
-                    <div class="auth-form hidden" id="registerForm">
-                        <h3><i class="fas fa-user-plus"></i> Sign Up</h3>
-                        <form id="registerFormElement">
-                            <div class="input-group">
-                                <input type="text" id="registerName" required>
-                                <label>Full Name</label>
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="input-group">
-                                <input type="email" id="registerEmail" required>
-                                <label>Email</label>
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" id="registerPassword" required>
-                                <label>Password</label>
-                                <i class="fas fa-lock"></i>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" id="confirmPassword" required>
-                                <label>Confirm Password</label>
-                                <i class="fas fa-lock"></i>
-                            </div>
-                            <div id="registerError" class="error-message"></div>
-                            <div id="registerSuccess" class="success-message"></div>
-                            <button type="submit" class="auth-btn" id="registerBtn">Sign Up</button>
-                            <p class="switch-auth">Already have an account? <a href="#" id="showLogin">Login</a></p>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <header>
         <div class="logo">
             <i class="fas fa-graduation-cap"></i>
@@ -88,23 +23,10 @@
                 <li><a href="#premium">Premium</a></li>
             </ul>
         </nav>
-        <div class="header-actions">
-            <button class="theme-toggle" id="themeToggle">
-                <i class="fas fa-moon"></i>
-                <span>Dark Mode</span>
-            </button>
-            <div class="user-menu" id="userMenu">
-                <button class="user-btn" id="userBtn">
-                    <i class="fas fa-user"></i>
-                    <span id="userNameDisplay">Guest</span>
-                </button>
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="#profile"><i class="fas fa-user"></i> Profile</a>
-                    <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
-                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
-            </div>
-        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Dark Mode</span>
+        </button>
     </header>
 
     <div class="container">
@@ -115,9 +37,9 @@
                         <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="user-info">
-                        <h2 id="sidebarUserName">John Dixon</h2>
+                        <h2>John Dixon</h2>
                         <p>Computer Science</p>
-                        <p id="sidebarStudentId">ID: 2410030278</p>
+                        <p>ID: 2410030278</p>
                     </div>
                 </div>
                 <div class="sidebar-nav">
@@ -133,7 +55,7 @@
             <div class="main-content">
                 <div class="tab-content active" id="homeContent">
                     <h2 class="section-title"><i class="fas fa-home"></i> Student Dashboard</h2>
-                    <p id="welcomeMessage">Welcome back, John Dixon! Here's your academic overview for this week.</p>
+                    <p>Welcome back, John Dixon! Here's your academic overview for this week.</p>
                     
                     <div class="resources-grid">
                         <div class="resource-card">
@@ -363,7 +285,7 @@
                                     <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent1); color: var(--secondary); padding: 0.3rem 1rem; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">
                                         MOST POPULAR
                                     </div>
-                                    <h4>Semester Plan</h4>
+                                    <!-- <h4>Semester Plan</h4> -->
                                     <p style="font-size: 2rem; margin: 0.5rem 0;">₹99.9</p>
                                     <p>for 6 months</p>
                                     <button class="btn btn-premium">Subscribe</button>
@@ -427,11 +349,12 @@
 
     <!-- Chatbot Chat Window -->
     <div id="chatbot-window">
-        <div id="chat-header">Career Chatbot <span id="chat-close">×</span></div>
-        <div id="chat-messages"></div>
-        <input type="text" id="chat-input" placeholder="Type a message...">
-        <button id="send-btn">Send</button>
+    <div id="chat-header">Career Chatbot <span id="chat-close">×</span></div>
+    <div id="chat-messages"></div>
+    <input type="text" id="chat-input" placeholder="Type a message...">
+    <button id="send-btn">Send</button>
     </div>
+
 
     <script src="script.js"></script>
 </body>
