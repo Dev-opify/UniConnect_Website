@@ -145,5 +145,5 @@ loginForm.addEventListener('submit', async (e) => {
 
 // Redirect if already logged in
 auth.onAuthStateChanged((user) => {
-    if (user) window.location.href = 'https://uniconnect.tech/dashboard';
+    if (user) window.location.href = '/dashboard';
 });
