@@ -145,5 +145,5 @@ loginForm.addEventListener('submit', async (e) => {
 
 // Redirect if already logged in
 auth.onAuthStateChanged((user) => {
-    if (user) window.location.href = 'index.html';
+    if (user) window.location.href = 'https://youtube.com';
 });
