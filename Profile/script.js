@@ -129,8 +129,9 @@ window.addSubject = function() {
     
     if (selectedValue && !selectedSubjects.find(s => s.code === selectedValue)) {
         selectedSubjects.push({
-            code: selectedValue,
-            name: subjectMapping[selectedValue]
+            
+            name: subjectMapping[selectedValue],
+            code: selectedValue
         });
         updateSubjectsDisplay();
         select.value = '';
