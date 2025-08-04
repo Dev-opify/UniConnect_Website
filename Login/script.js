@@ -1,7 +1,7 @@
-// script.js
+// Updated loginpage script.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -25,7 +25,7 @@ const loginLink = document.querySelector('.login-link');
 registerLink.onclick = () => wrapper.classList.add('active');
 loginLink.onclick = () => wrapper.classList.remove('active');
 
-// Utility
+// Utility functions
 function showError(id, msg) {
     const el = document.getElementById(id);
     el.textContent = msg;
@@ -57,6 +57,14 @@ function validatePassword(pwd) {
     return pwd.length >= 6 ? null : "Password must be at least 6 characters long";
 }
 
+// Generate roll number based on current date (similar to your app structure)
+function generateRollNumber() {
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(-2);
+    const timestamp = now.getTime().toString().slice(-6);
+    return `24${timestamp}`;
+}
+
 // Register
 const registerForm = document.getElementById('registerForm');
 registerForm.addEventListener('submit', async (e) => {
@@ -79,19 +87,35 @@ registerForm.addEventListener('submit', async (e) => {
 
         await updateProfile(user, { displayName: name });
 
-        const studentId = `STU${Date.now()}`;
-        await setDoc(doc(db, "users", user.uid), {
-            name, email,
+        const rollNumber = generateRollNumber();
+        
+        // Create user document with structure matching your app
+        const userData = {
+            fullName: name,
+            email: email,
+            rollNumber: rollNumber,
+            branch: "Computer Science and Engineering",
+            section: "2CSE5",
+            semester: 3,
+            phoneNumber: "",
+            dateOfBirth: "",
+            subjects: [
+                { code: "OS501", name: "Operating Systems" },
+                { code: "DSA101", name: "Data Structures and Algorithms" },
+                { code: "CN401", name: "Computer Networks" },
+                { code: "SE601", name: "Software Engineering" }
+            ],
             createdAt: new Date().toISOString(),
-            studentId,
-            course: "Computer Science",
-            year: "2025"
-        });
+            updatedAt: new Date().toISOString()
+        };
 
+        await setDoc(doc(db, "users", user.uid), userData);
+
+        // Store in sessionStorage for immediate access
         sessionStorage.setItem('userLoggedIn', 'true');
         sessionStorage.setItem('userName', name);
         sessionStorage.setItem('userEmail', email);
-        sessionStorage.setItem('userStudentId', studentId);
+        sessionStorage.setItem('userRollNumber', rollNumber);
 
         showSuccess('registerSuccess', 'Account created successfully! Redirecting...');
         setTimeout(() => window.location.href = 'index.html', 2000);
@@ -122,11 +146,19 @@ loginForm.addEventListener('submit', async (e) => {
         const cred = await signInWithEmailAndPassword(auth, email, pwd);
         const user = cred.user;
 
-        const studentId = `STU${Date.now()}`;
+        // Get user data from Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        let userData = null;
+        
+        if (userDoc.exists()) {
+            userData = userDoc.data();
+        }
+
+        // Store in sessionStorage
         sessionStorage.setItem('userLoggedIn', 'true');
-        sessionStorage.setItem('userName', user.displayName || 'Student');
+        sessionStorage.setItem('userName', userData?.fullName || user.displayName || 'Student');
         sessionStorage.setItem('userEmail', user.email);
-        sessionStorage.setItem('userStudentId', studentId);
+        sessionStorage.setItem('userRollNumber', userData?.rollNumber || '');
 
         showSuccess('loginSuccess', 'Login successful! Redirecting...');
         setTimeout(() => window.location.href = 'index.html', 2000);
@@ -145,5 +177,10 @@ loginForm.addEventListener('submit', async (e) => {
 
 // Redirect if already logged in
 auth.onAuthStateChanged((user) => {
-    if (user) window.location.href = '/dashboard';
+    if (user) {
+        // Check if we're not already on a protected page
+        if (!window.location.pathname.includes('profile') && !window.location.pathname.includes('dashboard')) {
+            window.location.href = 'index.html';
+        }
+    }
 });

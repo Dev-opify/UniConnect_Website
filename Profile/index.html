@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Page</title>
+    <title>UniConnect - Profile</title>
+    <link rel="icon" href="/graduation-cap.png" type="image/png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,61 +13,43 @@
         
         <div class="header">
             <div class="profile-pic">👤</div>
-            <h1 class="profile-name">John Dixon</h1>
+            <h1 class="profile-name" id="profileName">Loading...</h1>
         </div>
 
         <form id="profileForm">
             <div class="form-group">
-                <label class="form-label">Name</label>
-                <input type="text" class="form-input" placeholder="Enter name">
+                <label class="form-label">Full Name *</label>
+                <input type="text" class="form-input" id="fullName" placeholder="Enter full name" required>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Section</label>
-                <input type="text" class="form-input" placeholder="Enter section (2CSE13)">
+                <label class="form-label">Email *</label>
+                <input type="email" class="form-input" id="email" placeholder="Enter email" required readonly>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-input" placeholder="Enter email">
+                <label class="form-label">Roll Number *</label>
+                <input type="text" class="form-input" id="rollNumber" placeholder="Enter roll number (e.g., 2410030255)" required>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Roll Number</label>
-                <input type="text" class="form-input" placeholder="Enter roll number">
+                <label class="form-label">Section *</label>
+                <input type="text" class="form-input" id="section" placeholder="Enter section (e.g., 2CSE5)" required>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Subjects</label>
-                <div class="select-wrapper">
-                    <select class="form-select" id="subjectSelect" onchange="addSubject()">
-                        <option value="">Select subject name</option>
-                        <option value="DECO">DECO</option>
-                        <option value="PHYSICS">PHYSICS</option>
-                        <option value="MATHEMATICS">MATHEMATICS</option>
-                        <option value="DAA">DAA</option>
-                        <option value="DSA">DSA</option>
-                        <option value="COMMUNICATION FOR ENGINEERS">COMMUNICATION FOR ENGINEERS</option>
-                        <option value="OOP IN JAVA">OOP IN JAVA</option>
-                        <option value="PYTHON">PYTHON</option>
-                        <option value="VERBAL">VERBAL</option>
-                    </select>
-                </div>
-                <div class="selected-subjects" id="selectedSubjects">
-                    <div class="subject-tag">
-                        DECO 📚
-                        <button type="button" class="remove-btn" onclick="removeSubject(this)">×</button>
-                    </div>
-                    <div class="subject-tag">
-                        PHYSICS 🔬
-                        <button type="button" class="remove-btn" onclick="removeSubject(this)">×</button>
-                    </div>
-                </div>
+                <label class="form-label">Branch *</label>
+                <input type="text" class="form-input" id="branch" placeholder="Enter branch (e.g., Computer Science and Engineering)" required>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Phone Number</label>
-                <input type="tel" class="form-input" placeholder="Enter phone number">
+                <label class="form-label">Phone Number *</label>
+                <input type="tel" class="form-input" id="phoneNumber" placeholder="Enter phone number (e.g., 9585738235)" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Semester *</label>
+                <input type="number" class="form-input" id="semester" placeholder="Enter semester (e.g., 3)" min="1" max="8" required>
             </div>
 
             <div class="form-group">
@@ -75,6 +58,41 @@
                     <input type="date" class="form-input" id="dateOfBirth">
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="form-label">Subjects</label>
+                <div class="select-wrapper">
+                    <select class="form-select" id="subjectSelect" onchange="addSubject()">
+                        <option value="">Select subject name</option>
+                        <option value="DSA101">Data Structures and Algorithms</option>
+                        <option value="OOP201">Object Oriented Programming</option>
+                        <option value="DBMS301">Database Management System</option>
+                        <option value="CN401">Computer Networks</option>
+                        <option value="OS501">Operating Systems</option>
+                        <option value="SE601">Software Engineering</option>
+                        <option value="MATH101">Mathematics</option>
+                        <option value="PHY101">Physics</option>
+                        <option value="CHEM101">Chemistry</option>
+                        <option value="DECO201">Digital Electronics</option>
+                        <option value="MP301">Microprocessors</option>
+                        <option value="CA401">Computer Architecture</option>
+                        <option value="AI501">Artificial Intelligence</option>
+                        <option value="ML501">Machine Learning</option>
+                        <option value="WD701">Web Development</option>
+                        <option value="MAD801">Mobile App Development</option>
+                        <option value="PY101">Python Programming</option>
+                        <option value="JAVA201">Java Programming</option>
+                        <option value="CPP301">C++ Programming</option>
+                        <option value="DS401">Data Science</option>
+                    </select>
+                </div>
+                <div class="selected-subjects" id="selectedSubjects">
+                    <!-- Selected subjects will appear here -->
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none; color: #dc3545; margin-top: 10px; font-size: 14px;"></div>
+            <div id="successMessage" class="success-message" style="display: none; color: #28a745; margin-top: 10px; font-size: 14px;"></div>
 
             <div class="btn-group">
                 <button type="submit" class="btn-primary" id="saveBtn">
@@ -87,6 +105,6 @@
         </form>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>
