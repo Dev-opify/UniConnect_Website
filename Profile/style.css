@@ -34,7 +34,7 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     animation: shimmer 2s infinite;
 }
 
@@ -125,7 +125,7 @@ body {
 }
 
 .back-btn:hover {
-    color: #4facfe;
+    color: #667eea;
     transform: translateX(-5px);
 }
 
@@ -185,9 +185,9 @@ body {
 
 .form-input:focus {
     outline: none;
-    border-color: #4facfe;
+    border-color: #667eea;
     background: white;
-    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     transform: translateY(-2px);
 }
 
@@ -213,9 +213,9 @@ body {
 
 .form-select:focus {
     outline: none;
-    border-color: #4facfe;
+    border-color: #667eea;
     background: white;
-    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .select-wrapper::after {
@@ -283,7 +283,7 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     border: none;
     padding: 15px 20px;
@@ -313,7 +313,7 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
 }
 
 .btn-secondary {
@@ -351,9 +351,9 @@ body {
 
 .date-input input[type="date"]:focus {
     outline: none;
-    border-color: #4facfe;
+    border-color: #667eea;
     background: white;
-    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 /* Responsive Design */
