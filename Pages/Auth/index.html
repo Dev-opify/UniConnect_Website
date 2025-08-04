@@ -1,0 +1,90 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniConnect - Login & Register</title>
+    <link rel="icon" href="/graduation-cap.png" type="image/png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="index.html" class="back-to-home">
+        <i class='bx bx-arrow-back'></i> Back to Home
+    </a>
+
+    <div class="wrapper">
+        <span class="rotate-bg"></span>
+        <span class="rotate-bg2"></span>
+
+        <!-- Login Form -->
+        <div class="form-box login">
+            <h2 class="title animation" style="--i:0; --j:21">Login</h2>
+            <form id="loginForm">
+                <div class="input-box animation" style="--i:1; --j:22">
+                    <input type="email" id="loginEmail" required>
+                    <label>Email</label>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <div class="input-box animation" style="--i:2; --j:23">
+                    <input type="password" id="loginPassword" required>
+                    <label>Password</label>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div id="loginError" class="error-message animation" style="--i:3; --j:24"></div>
+                <div id="loginSuccess" class="success-message animation" style="--i:3; --j:24"></div>
+                <button type="submit" class="btn animation" style="--i:4; --j:25" id="loginBtn">Login</button>
+                <div class="linkTxt animation" style="--i:5; --j:26">
+                    <p>Don't have an account? <a href="#" class="register-link">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+
+        <div class="info-text login">
+            <h2 class="animation" style="--i:0; --j:20">Welcome Back!</h2>
+            <p class="animation" style="--i:1; --j:21">Access your student portal and continue your academic journey with UniConnect.</p>
+        </div>
+
+        <!-- Register Form -->
+        <div class="form-box register">
+            <h2 class="title animation" style="--i:17; --j:0">Sign Up</h2>
+            <form id="registerForm">
+                <div class="input-box animation" style="--i:18; --j:1">
+                    <input type="text" id="registerName" required>
+                    <label>Full Name</label>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box animation" style="--i:19; --j:2">
+                    <input type="email" id="registerEmail" required>
+                    <label>Email</label>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <div class="input-box animation" style="--i:20; --j:3">
+                    <input type="password" id="registerPassword" required>
+                    <label>Password</label>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div class="input-box animation" style="--i:21; --j:4">
+                    <input type="password" id="confirmPassword" required>
+                    <label>Confirm Password</label>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div id="registerError" class="error-message animation" style="--i:22; --j:5"></div>
+                <div id="registerSuccess" class="success-message animation" style="--i:22; --j:5"></div>
+                <button type="submit" class="btn animation" style="--i:23;--j:6" id="registerBtn">Sign Up</button>
+                <div class="linkTxt animation" style="--i:24; --j:7">
+                    <p>Already have an account? <a href="#" class="login-link">Login</a></p>
+                </div>
+            </form>
+        </div>
+
+        <div class="info-text register">
+            <h2 class="animation" style="--i:17; --j:0;">Join UniConnect!</h2>
+            <p class="animation" style="--i:18; --j:1;">Create your account and start your amazing academic journey with our comprehensive student portal.</p>
+        </div>
+    </div>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>
