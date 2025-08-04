@@ -3,358 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniConnect - Student Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png"></link>
+    <title>Uniconnect - Your All-in-One University Companion</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>UniConnect</span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#profile">Profile</a></li>
-                <li><a href="#schedule">Schedule</a></li>
-                <li><a href="#community">Community</a></li>
-                <li><a href="#premium">Premium</a></li>
+    <div class="bg-animation"></div>
+
+    <header id="header">
+        <nav class="container">
+            <div class="logo">Uniconnect</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
+            <a href="#" class="cta-button">Get Started</a>
         </nav>
-        <button class="theme-toggle" id="themeToggle">
-            <i class="fas fa-moon"></i>
-            <span>Dark Mode</span>
-        </button>
     </header>
 
-    <div class="container">
-        <div class="dashboard">
-            <div class="sidebar">
-                <div class="user-profile">
-                    <div class="avatar">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                    <div class="user-info">
-                        <h2>John Dixon</h2>
-                        <p>Computer Science</p>
-                        <p>ID: 2410030278</p>
-                    </div>
-                </div>
-                <div class="sidebar-nav">
-                    <a href="#home" class="active"><i class="fas fa-home"></i> Dashboard</a>
-                    <a href="#notes"><i class="fas fa-book"></i> Course Notes</a>
-                    <a href="#assignments"><i class="fas fa-tasks"></i> Assignments</a>
-                    <a href="studyResource.html"><i class="fas fa-file-alt"></i> Study Resources</a>
-                    <a href="#previous"><i class="fas fa-history"></i> Previous Papers</a>
-                    <a href="#grades"><i class="fas fa-chart-line"></i> Grades & Progress</a>
-                </div>
-            </div>
-
-            <div class="main-content">
-                <div class="tab-content active" id="homeContent">
-                    <h2 class="section-title"><i class="fas fa-home"></i> Student Dashboard</h2>
-                    <p>Welcome back, John Dixon! Here's your academic overview for this week.</p>
-                    
-                    <div class="resources-grid">
-                        <div class="resource-card">
-                            <div class="card-header">
-                                <i class="fas fa-book"></i>
-                                <h3>Data Structures And Algorithms</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>Updated lecture notes for Module 3 - Trees and Graphs. Includes examples and diagrams.</p>
-                                <a href="#" class="btn">Download Notes</a>
-                            </div>
-                        </div>
-                        
-                        <div class="resource-card">
-                            <div class="card-header">
-                                <i class="fas fa-tasks"></i>
-                                <h3>Mathematics</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>Assignment 2: Fourier Series. Due date: 15th June 2025.</p>
-                                <a href="#" class="btn">View Assignment</a>
-                            </div>
-                        </div>
-                        
-                        <div class="resource-card">
-                            <div class="card-header">
-                                <i class="fas fa-file-alt"></i>
-                                <h3>Digital Electronics And Computer Organisation</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>2024 End Semester Question Paper.</p>
-                                <a href="#" class="btn">View Paper</a>
-                            </div>
-                        </div>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Your All-in-One University Companion</h1>
+                    <div class="subtitle">Simplify Your Academic Journey</div>
+                    <p>University life can be overwhelming, with classes to attend, assignments to complete, exams to prepare for, and deadlines to keep track of. That's where Uniconnect steps in — your personalized academic dashboard designed to simplify your student journey.</p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn-primary">Get Started</a>
+                        <!-- <a href="#" class="btn-secondary">Watch Demo</a> -->
                     </div>
                 </div>
-
-                <div class="tab-content" id="scheduleContent">
-                    <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Academic Schedule</h2>
-                    <p>Your upcoming academic events and exam timetable.</p>
-                    
-                    <div class="calendar">
-                        <div class="calendar-header">June 2025</div>
-                        <div class="calendar-day">Sun</div>
-                        <div class="calendar-day">Mon</div>
-                        <div class="calendar-day">Tue</div>
-                        <div class="calendar-day">Wed</div>
-                        <div class="calendar-day">Thu</div>
-                        <div class="calendar-day">Fri</div>
-                        <div class="calendar-day">Sat</div>
-                        <div class="calendar-day">25</div>
-                        <div class="calendar-day">26</div>
-                        <div class="calendar-day">27</div>
-                        <div class="calendar-day">28</div>
-                        <div class="calendar-day">29</div>
-                        <div class="calendar-day">30</div>
-                        <div class="calendar-day">1</div>
-                        <div class="calendar-day">2</div>
-                        <div class="calendar-day event-day">3<span>Maths Quiz</span></div>
-                        <div class="calendar-day">4</div>
-                        <div class="calendar-day">5</div>
-                        <div class="calendar-day event-day">6<span>Assignment Due</span></div>
-                        <div class="calendar-day">7</div>
-                        <div class="calendar-day">8</div>
-                        <div class="calendar-day event-day">9<span>DECO quiz</span></div>
-                        <div class="calendar-day">10</div>
-                        <div class="calendar-day">11</div>
-                        <div class="calendar-day">12</div>
-                        <div class="calendar-day">13</div>
-                        <div class="calendar-day">14</div>
-                        <div class="calendar-day event-day">15<span>DSA quiz</span></div>
-                        <div class="calendar-day">16</div>
-                        <div class="calendar-day">17</div>
-                        <div class="calendar-day">18</div>
-                        <div class="calendar-day">19</div>
-                        <div class="calendar-day">20</div>
-                        <div class="calendar-day">21</div>
-                        <div class="calendar-day">22</div>
-                        <div class="calendar-day">23</div>
-                        <div class="calendar-day event-day">24<span>Python quiz</span></div>
-                        <div class="calendar-day">25</div>
-                        <div class="calendar-day">26</div>
-                        <div class="calendar-day">27</div>
-                        <div class="calendar-day">28</div>
-                        <div class="calendar-day">29</div>
-                        <div class="calendar-day">30</div>
-                    </div>
-                    
-                    <div class="upcoming-events" style="margin-top: 2rem;">
-                        <h3><i class="fas fa-list"></i> Upcoming Deadlines</h3>
-                        <ul style="list-style: none; margin-top: 1rem;">
-                            <li style="padding: 0.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-                                <span>Data Structures Assignment 3</span>
-                                <span>Due: Jun 6, 2025</span>
-                            </li>
-                            <li style="padding: 0.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-                                <span>DECO Assignment 2</span>
-                                <span>Due: Jun 9, 2025</span>
-                            </li>
-                            <li style="padding: 0.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-                                <span>DSA Assignment 2</span>
-                                <span>Due: Jun 15, 2025</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="tab-content" id="communityContent">
-                    <h2 class="section-title"><i class="fas fa-users"></i> Student Community</h2>
-                    <p>Connect with classmates, join groups, and collaborate on projects.</p>
-                    
-                    <div class="community-grid">
-                        <div class="community-card">
-                            <div class="card-header">
-                                <i class="fas fa-laptop-code"></i>
-                                <h3>Computer Science 2023</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>Official group for CS 2023 batch. Share resources, ask questions, and collaborate.</p>
-                                <p><strong>Members:</strong> 142</p>
-                                <a href="#" class="btn">Join Community</a>
-                            </div>
+                <div class="hero-visual">
+                    <div class="dashboard-mockup">
+                        <div class="mockup-header">
+                            <div class="mockup-dot"></div>
+                            <div class="mockup-dot"></div>
+                            <div class="mockup-dot"></div>
                         </div>
-                        
-                        <div class="community-card">
-                            <div class="card-header">
-                                <i class="fas fa-calculator"></i>
-                                <h3>Algorithms Study Group</h3>
+                        <div class="mockup-content">
+                            <div class="mockup-item">
+                                <div>📚 Data Structures Assignment</div>
+                                <div style="color: #ff5f57; font-weight: 600;">Due Today</div>
                             </div>
-                            <div class="card-body">
-                                <p>Preparing for Algorithms exam? Join our study sessions and problem-solving groups.</p>
-                                <p><strong>Members:</strong> 87</p>
-                                <a href="#" class="btn">Join Study Group</a>
+                            <div class="mockup-item">
+                                <div>📊 Attendance: Mathematics</div>
+                                <div style="color: #28ca42; font-weight: 600;">85%</div>
                             </div>
-                        </div>
-                        
-                        <div class="community-card">
-                            <div class="card-header">
-                                <i class="fas fa-database"></i>
-                                <h3>Database Club</h3>
+                            <div class="mockup-item">
+                                <div>📋 Physics Lab Report</div>
+                                <div style="color: #ffbd2e; font-weight: 600;">2 days left</div>
                             </div>
-                            <div class="card-body">
-                                <p>For students interested in database systems, SQL, and data management technologies.</p>
-                                <p><strong>Members:</strong> 64</p>
-                                <a href="#" class="btn">Join Club</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 2rem; background: rgba(2, 48, 71, 0.05); padding: 1.5rem; border-radius: 10px;">
-                        <h3><i class="fas fa-comments"></i> Recent Discussions</h3>
-                        <div style="margin-top: 1rem;">
-                            <div style="padding: 1rem; border-bottom: 1px solid #eee;">
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--light); display: flex; align-items: center; justify-content: center;">
-                                        <i class="fas fa-user" style="color: var(--secondary);"></i>
-                                    </div>
-                                    <strong>Rick</strong>
-                                </div>
-                                <p style="margin: 0.5rem 0 0 3rem;">Does anyone have notes for the last DECO lecture? I missed the class.</p>
-                                <div style="margin-left: 3rem; font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
-                                    <span>2 hours ago</span> · 
-                                    <a href="#" style="color: var(--primary);">3 replies</a>
-                                </div>
-                            </div>
-                            <div style="padding: 1rem; border-bottom: 1px solid #eee;">
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--light); display: flex; align-items: center; justify-content: center;">
-                                        <i class="fas fa-user" style="color: var(--secondary);"></i>
-                                    </div>
-                                    <strong>Natasha</strong>
-                                </div>
-                                <p style="margin: 0.5rem 0 0 3rem;">Study group meeting tomorrow at 4 PM in the library for Algorithms revision.</p>
-                                <div style="margin-left: 3rem; font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
-                                    <span>5 hours ago</span> · 
-                                    <a href="#" style="color: var(--primary);">7 replies</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-content" id="premiumContent">
-                    <h2 class="section-title"><i class="fas fa-crown"></i> Premium Features</h2>
-                    <p>Upgrade to Premium for exclusive study resources and personalized support.</p>
-                    
-                    <div class="premium-container">
-                        <h3>What You Get with Premium:</h3>
-                        
-                        <div class="premium-features">
-                            <div class="feature-card">
-                                <i class="fas fa-file-signature"></i>
-                                <h4>Handwritten Notes</h4>
-                                <p>Detailed notes from top students and professors</p>
-                            </div>
-                            
-                            <div class="feature-card">
-                                <i class="fas fa-headset"></i>
-                                <h4>24/7 Doubt Support</h4>
-                                <p>Instant solutions to your academic queries</p>
-                            </div>
-                            
-                            <div class="feature-card">
-                                <i class="fas fa-video"></i>
-                                <h4>Expert Video Solutions</h4>
-                                <p>Step-by-step explanations for complex problems</p>
-                            </div>
-                            
-                            <div class="feature-card">
-                                <i class="fas fa-book-open"></i>
-                                <h4>Premium Study Materials</h4>
-                                <p>Exclusive textbooks summaries and cheat sheets</p>
-                            </div>
-                        </div>
-                        
-                        <div style="text-align: center; margin-top: 1.5rem;">
-                            <h3>Choose Your Plan:</h3>
-                            <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;">
-                                <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px; width: 220px;">
-                                    <h4>Monthly Plan</h4>
-                                    <p style="font-size: 2rem; margin: 0.5rem 0;">₹29.9</p>
-                                    <p>per month</p>
-                                    <button class="btn btn-premium">Subscribe</button>
-                                </div>
-                                
-                                <div style="background: rgba(251, 133, 0, 0.3); padding: 1.5rem; border-radius: 10px; width: 220px; position: relative;">
-                                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent1); color: var(--secondary); padding: 0.3rem 1rem; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">
-                                        MOST POPULAR
-                                    </div>
-                                    <!-- <h4>Semester Plan</h4> -->
-                                    <p style="font-size: 2rem; margin: 0.5rem 0;">₹99.9</p>
-                                    <p>for 6 months</p>
-                                    <button class="btn btn-premium">Subscribe</button>
-                                </div>
-                                
-                                <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px; width: 220px;">
-                                    <h4>Annual Plan</h4>
-                                    <p style="font-size: 2rem; margin: 0.5rem 0;">₹149.9</p>
-                                    <p>per year</p>
-                                    <button class="btn btn-premium">Subscribe</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 2rem;">
-                        <h3><i class="fas fa-star"></i> Premium Resources Sample</h3>
-                        <div class="resources-grid" style="margin-top: 1rem;">
-                            <div class="resource-card">
-                                <div class="card-header">
-                                    <i class="fas fa-file-signature"></i>
-                                    <h3>Data Structure And Algorithms Handbook</h3>
-                                </div>
-                                <div class="card-body">
-                                    <p>Premium illustrated guide with step-by-step problem solving techniques.</p>
-                                    <div style="background: rgba(255, 183, 3, 0.1); padding: 0.8rem; border-radius: 8px; margin-top: 1rem; display: flex; align-items: center; gap: 10px;">
-                                        <i class="fas fa-lock" style="color: var(--accent1);"></i>
-                                        <span>Premium content - Subscribe to access</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="resource-card">
-                                <div class="card-header">
-                                    <i class="fas fa-video"></i>
-                                    <h3>Digital Electronics And Computer Organisation Video Solutions</h3>
-                                </div>
-                                <div class="card-body">
-                                    <p>5-hour video course solving previous year exam questions with explanations.</p>
-                                    <div style="background: rgba(255, 183, 3, 0.1); padding: 0.8rem; border-radius: 8px; margin-top: 1rem; display: flex; align-items: center; gap: 10px;">
-                                        <i class="fas fa-lock" style="color: var(--accent1);"></i>
-                                        <span>Premium content - Subscribe to access</span>
-                                    </div>
-                                </div>
+                            <div class="mockup-item">
+                                <div>🎯 Upcoming: Mid-term Exam</div>
+                                <div style="color: #667eea; font-weight: 600;">Next Week</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Everything You Need to Excel</h2>
+            <p class="section-subtitle">Powerful tools designed specifically for modern university students</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Attendance Tracking</h3>
+                    <p>Monitor your attendance percentage across all subjects with intelligent alerts when you're approaching minimum requirements.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Assignment Manager</h3>
+                    <p>Never miss a deadline again. Track all your assignments, projects, and submissions with smart deadline reminders.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Resource Library</h3>
+                    <p>Access past year question papers, study materials, and homework resources — all organized by subject and semester.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Exam Preparation</h3>
+                    <p>Plan your study schedule effectively with exam calendars, revision trackers, and preparation milestones.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Smart Notifications</h3>
+                    <p>Receive intelligent reminders for classes, deadlines, and important academic events tailored to your schedule.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Progress Analytics</h3>
+                    <p>Visualize your academic progress with detailed insights into your grades, attendance patterns, and performance trends.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>50K+</h3>
+                    <p>Active Students</p>
+                </div>
+                <div class="stat-item">
+                    <h3>200+</h3>
+                    <p>Universities</p>
+                </div>
+                <div class="stat-item">
+                    <h3>95%</h3>
+                    <p>Success Rate</p>
+                </div>
+                <div class="stat-item">
+                    <h3>4.8★</h3>
+                    <p>User Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer>
-        <p>&copy; 2025 UniConnect - University Student Portal. All rights reserved.</p>
-        <p>Designed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for students.</p>
-        <p> by visit <a style="color: beige;" href="https://dev-opify.netlify.app/" target="_blank">Dev-opify</a></p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Uniconnect</h3>
+                    <p>Empowering students with organized academic planning and seamless university life management.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <a href="#">Attendance Tracking</a>
+                    <a href="#">Assignment Manager</a>
+                    <a href="#">Resource Library</a>
+                    <a href="#">Exam Preparation</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="#">Help Center</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <a href="#">Twitter</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Facebook</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Uniconnect. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
-
-    <!-- Floating Chatbot Button -->
-    <button id="chatbot-toggle">💬</button>
-
-    <!-- Chatbot Chat Window -->
-    <div id="chatbot-window">
-    <div id="chat-header">Career Chatbot <span id="chat-close">×</span></div>
-    <div id="chat-messages"></div>
-    <input type="text" id="chat-input" placeholder="Type a message...">
-    <button id="send-btn">Send</button>
-    </div>
-
 
     <script src="script.js"></script>
 </body>
