@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <button class="back-btn" onclick="goBack()">←</button>
+        
+        <div class="header">
+            <div class="profile-pic">👤</div>
+            <h1 class="profile-name">John Dixon</h1>
+        </div>
+
+        <form id="profileForm">
+            <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-input" placeholder="Enter name">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Section</label>
+                <input type="text" class="form-input" placeholder="Enter section (2CSE13)">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" placeholder="Enter email">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Roll Number</label>
+                <input type="text" class="form-input" placeholder="Enter roll number">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Subjects</label>
+                <div class="select-wrapper">
+                    <select class="form-select" id="subjectSelect" onchange="addSubject()">
+                        <option value="">Select subject name</option>
+                        <option value="DECO">DECO</option>
+                        <option value="PHYSICS">PHYSICS</option>
+                        <option value="MATHEMATICS">MATHEMATICS</option>
+                        <option value="DAA">DAA</option>
+                        <option value="DSA">DSA</option>
+                        <option value="COMMUNICATION FOR ENGINEERS">COMMUNICATION FOR ENGINEERS</option>
+                        <option value="OOP IN JAVA">OOP IN JAVA</option>
+                        <option value="PYTHON">PYTHON</option>
+                        <option value="VERBAL">VERBAL</option>
+                    </select>
+                </div>
+                <div class="selected-subjects" id="selectedSubjects">
+                    <div class="subject-tag">
+                        DECO 📚
+                        <button type="button" class="remove-btn" onclick="removeSubject(this)">×</button>
+                    </div>
+                    <div class="subject-tag">
+                        PHYSICS 🔬
+                        <button type="button" class="remove-btn" onclick="removeSubject(this)">×</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-input" placeholder="Enter phone number">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Date of Birth</label>
+                <div class="date-input">
+                    <input type="date" class="form-input" id="dateOfBirth">
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn-primary" id="saveBtn">
+                    Save Changes
+                </button>
+                <button type="button" class="btn-secondary" onclick="logout(event)">
+                    🚪 Logout
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
