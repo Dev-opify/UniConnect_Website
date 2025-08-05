@@ -80,7 +80,7 @@ onAuthStateChanged(auth, async (user) => {
         currentUser = user;
         await loadUserProfile(user.uid);
     } else {
-        window.location.href = 'login.html';
+        window.location.href = '/Login';
     }
 });
 
@@ -194,7 +194,7 @@ window.logout = async function(event) {
             await signOut(auth);
             sessionStorage.clear();
             localStorage.clear();
-            window.location.href = '/login';
+            window.location.href = '/Login';
         } catch (error) {
             console.error("Logout error:", error);
             showError("Logout failed. Please try again.");
