@@ -179,7 +179,7 @@ window.goBack = function() {
     const container = document.querySelector('.container');
     container.style.animation = 'slideDown 0.5s ease-out forwards';
     setTimeout(() => {
-        window.location.href = 'index.html';
+        window.location.href = '/dashboard';
     }, 500);
 };
 
@@ -194,7 +194,7 @@ window.logout = async function(event) {
             await signOut(auth);
             sessionStorage.clear();
             localStorage.clear();
-            window.location.href = 'login.html';
+            window.location.href = '/login';
         } catch (error) {
             console.error("Logout error:", error);
             showError("Logout failed. Please try again.");
