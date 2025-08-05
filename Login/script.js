@@ -161,7 +161,7 @@ loginForm.addEventListener('submit', async (e) => {
         sessionStorage.setItem('userRollNumber', userData?.rollNumber || '');
 
         showSuccess('loginSuccess', 'Login successful! Redirecting...');
-        setTimeout(() => window.location.href = 'index.html', 2000);
+        setTimeout(() => window.location.href = '/dashboard', 2000);
     } catch (err) {
         let msg = 'Login failed. Please try again.';
         if (err.code === 'auth/user-not-found') msg = 'No account found with this email address.';
