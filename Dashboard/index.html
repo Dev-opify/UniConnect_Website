@@ -22,11 +22,17 @@
                 <li><a href="#premium">Premium</a></li>
             </ul>
         </nav>
-        <button class="theme-toggle" id="themeToggle">
-            <i class="fas fa-moon"></i>
-            <span>Dark Mode</span>
-        </button>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <!-- <span>Dark Mode</span> -->
+            </button>
+            <a href="#logout" class="logout-btn">
+                <i class="fas fa-right-from-bracket"></i> Log Out
+            </a>
+        </div>
     </header>
+
 
     <div class="container">
         <div class="dashboard">
@@ -47,12 +53,11 @@
                     <a href="#home" class="active"><i class="fas fa-home"></i> Dashboard</a>
                     <a href="/Notes/index.html"><i class="fas fa-book"></i> Course Notes</a>
                     <a href="#assignments"><i class="fas fa-tasks"></i> Assignments</a>
-                    <a href="/StudyRes/index.html" target="_blank"><i class="fas fa-file-alt"></i> Study Resources</a>
+                    <a href="/StudyRes/index.html"><i class="fas fa-file-alt"></i> Study Resources</a>
                     <a href="#previous"><i class="fas fa-history"></i> Previous Papers</a>
-                    <a href="#grades"><i class="fas fa-chart-line"></i> Grades & Progress</a>
                 </div>
             </div>
-
+            
             <div class="main-content">
                 <div class="tab-content active" id="homeContent">
                     <h2 class="section-title"><i class="fas fa-home"></i> Student Dashboard</h2>
@@ -342,7 +347,7 @@
     <footer>
         <p>&copy; 2025 UniConnect - University Student Portal. All rights reserved.</p>
         <p>Designed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for students.</p>
-        <p> by visit <a style="color: beige;" href="https://dev-opify.netlify.app/" target="_blank">Dev-opify</a></p>
+        <p> by <a style="color: beige;" href="https://dev-opify.netlify.app/" target="_blank">Dev-opify</a></p>
     </footer>
 
     <!-- Floating Chatbot Button -->

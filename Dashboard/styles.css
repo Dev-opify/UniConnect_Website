@@ -42,6 +42,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
+    
 }
 
 .logo {
@@ -584,4 +585,50 @@ footer {
   font-size: 10px;
   color: #888;
   margin-top: 4px;
+}
+
+.logout-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #e63946; /* red shade */
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.logout-btn:hover {
+    background-color: #d62828; /* darker red on hover */
+}
+
+/* Container for theme toggle + logout */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Logout button style */
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #e63946; /* red shade */
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+}
+
+.logout-btn:hover {
+    background-color: #d62828; /* darker red on hover */
 }
