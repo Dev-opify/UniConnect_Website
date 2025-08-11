@@ -148,3 +148,9 @@ document.addEventListener('mouseup', () => {
 // chatbot profile picture
 const botImage = './static/ana-avatar.png';
 
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mainNav = document.getElementById('mainNav');
+
+mobileMenuBtn.addEventListener('click', () =>{
+    mainNav.classList.toggle('open');
+});

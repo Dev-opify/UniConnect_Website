@@ -14,24 +14,39 @@
             <i class="fas fa-graduation-cap"></i>
             <span>UniConnect</span>
         </div>
-        <nav>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <nav id="mainNav">
             <ul>
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#schedule">Schedule</a></li>
                 <li><a href="#community">Community</a></li>
                 <li><a href="#premium">Premium</a></li>
+                <!-- Log Out in mobile menu -->
+                <li class="mobile-only">
+                    <a href="#logout" class="logout-btn">
+                        <i class="fas fa-right-from-bracket"></i> Log Out
+                    </a>
+                </li>
             </ul>
         </nav>
+
+        <!-- Desktop actions -->
         <div class="header-actions">
             <button class="theme-toggle" id="themeToggle">
                 <i class="fas fa-moon"></i>
                 <!-- <span>Dark Mode</span> -->
             </button>
-            <a href="#logout" class="logout-btn">
+            <a href="#logout" class="logout-btn desktop-only">
                 <i class="fas fa-right-from-bracket"></i> Log Out
             </a>
         </div>
     </header>
+
 
 
     <div class="container">
@@ -39,7 +54,7 @@
             <div class="sidebar">
                 <div class="user-profile">
                     <div class="avatar"> 
-                        <a href="/profile">
+                        <!-- <a href="/profile" style="text-decoration: none; color: white;"> -->
 
                         <i class="fas fa-user-graduate"></i>
                     </div>
@@ -51,10 +66,10 @@
                 </div>
                 <div class="sidebar-nav">
                     <a href="#home" class="active"><i class="fas fa-home"></i> Dashboard</a>
-                    <a href="/Notes/index.html"><i class="fas fa-book"></i> Course Notes</a>
                     <a href="#assignments"><i class="fas fa-tasks"></i> Assignments</a>
                     <a href="/StudyRes/index.html"><i class="fas fa-file-alt"></i> Study Resources</a>
-                    <a href="#previous"><i class="fas fa-history"></i> Previous Papers</a>
+                    <a href="/StudyRes/index.html"><i class="fas fa-history"></i> Previous Papers</a>
+                    <a href="/Profile/index.html"><i class="fas fa-user-circle"></i> Profile</a>
                 </div>
             </div>
             
