@@ -58,7 +58,7 @@ const animateCounter = (element, target) => {
         } else if (element.textContent.includes('★')) {
             element.textContent = (current / 10).toFixed(1) + '★';
         } else {
-            element.textContent = Math.floor(current) + '+';
+            element.textContent = Math.floor(current);
         }
     }, 20);
 };
@@ -67,25 +67,35 @@ const animateCounter = (element, target) => {
 const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            const counters = entry.target.querySelectorAll('.stat-item h3');
+            const counters = entry.target.querySelectorAll('.count');
             counters.forEach(counter => {
-                const text = counter.textContent;
-                let target = 0;
-                
-                if (text.includes('50K')) target = 50000;
-                else if (text.includes('200')) target = 200;
-                else if (text.includes('95')) target = 95;
-                else if (text.includes('4.8')) target = 48;
-                
-                if (target > 0) {
-                    counter.textContent = '0';
-                    animateCounter(counter, target);
-                }
+                let target = parseFloat(counter.textContent); // Get number only
+                counter.textContent = '0'; // Start animation from 0
+                animateCounter(counter, target);
             });
             statsObserver.unobserve(entry.target);
         }
     });
 }, { threshold: 0.5 });
+
+// function animateCounter(element, target) {
+//     let count = 0;
+//     let increment = target / 100; // Speed control
+
+//     let timer = setInterval(() => {
+//         count += increment;
+
+//         if (count >= target) {
+//             element.textContent = target % 1 === 0 ? target : target.toFixed(1);
+//             clearInterval(timer);
+//         } else {
+//             element.textContent = target % 1 === 0
+//                 ? Math.round(count)
+//                 : count.toFixed(1);
+//         }
+//     }, 20);
+// }
+
 
 const statsSection = document.querySelector('.stats');
 if (statsSection) {
