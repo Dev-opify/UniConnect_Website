@@ -175,12 +175,12 @@ loginForm.addEventListener('submit', async (e) => {
     }
 });
 
-// // Redirect if already logged in
-// auth.onAuthStateChanged((user) => {
-//     if (user) {
-//         // Check if we're not already on a protected page
-//         if (!window.location.pathname.includes('profile') && !window.location.pathname.includes('dashboard')) {
-//             window.location.href = '/dashboard';
-//         }
-//     }
-// });
+// Redirect if already logged in
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        // Check if we're not already on a protected page
+        if (!window.location.pathname.includes('profile') && !window.location.pathname.includes('dashboard')) {
+            window.location.href = '/dashboard';
+        }
+    }
+});
