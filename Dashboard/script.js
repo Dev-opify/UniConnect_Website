@@ -156,19 +156,24 @@ mobileMenuBtn.addEventListener('click', () =>{
 });
 
 
-const logoutBtn = document.getElementById('logout');
-
-logoutBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    // Clear all saved data
-    localStorage.clear();
-    sessionStorage.clear();
-
-    // Optionally clear dynamic dashboard content
-    if (chatMessages) chatMessages.innerHTML = '';
-    if (tabContents) tabContents.forEach(content => content.innerHTML = '');
-
-    // Redirect to login page
-    window.location.href = '/login';
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutBtn = document.getElementById('logout');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // stop any default link action
+            // Clear all stored data
+            localStorage.clear();
+            sessionStorage.clear();
+            // Optionally clear cookies if needed:
+            document.cookie.split(";").forEach(c => {
+                document.cookie = c
+                    .replace(/^ +/, "")
+                    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            // Redirect to login page
+            window.location.href = '/login';
+        });
+    } else {
+        console.error('Logout button not found');
+    }
 });
