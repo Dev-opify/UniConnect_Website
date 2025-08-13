@@ -1,0 +1,1 @@
+mongodb+srv://devopify:<db_password>@cluster0.vyhnxle.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
