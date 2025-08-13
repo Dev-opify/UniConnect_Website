@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
-// Firebase config
+// Firebase config (only for authentication)
 const firebaseConfig = {
     apiKey: "AIzaSyDsNHMQKy4x2uYP2kdiNe_jbUeArpYjrbw",
     authDomain: "uniconnect-a880a.firebaseapp.com",
@@ -68,7 +68,7 @@ function setLoading(btnId, loading, loadingText = 'Processing...', normalText = 
     }
 }
 
-// Authentication check
+// Check authentication
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
@@ -78,7 +78,6 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-// Load user profile from MongoDB
 async function loadUserProfile(uid) {
     try {
         const res = await fetch(`/api/profile?uid=${uid}`);
@@ -86,7 +85,7 @@ async function loadUserProfile(uid) {
         if (data.success && data.data) {
             populateForm(data.data);
         } else {
-            // New user: prefill email/name from Firebase
+            // New user
             document.getElementById('email').value = currentUser.email;
             document.getElementById('fullName').value = currentUser.displayName || '';
             document.getElementById('profileName').textContent = currentUser.displayName || 'Student';
@@ -97,7 +96,6 @@ async function loadUserProfile(uid) {
     }
 }
 
-// Populate form fields
 function populateForm(userData) {
     document.getElementById('fullName').value = userData.fullName || '';
     document.getElementById('email').value = userData.email || '';
@@ -157,7 +155,7 @@ window.goBack = function() {
     setTimeout(() => { window.location.href = '/dashboard'; }, 500);
 };
 
-window.logout = async function() {
+window.logout = async function(event) {
     if (confirm('Are you sure you want to logout?')) {
         try {
             await signOut(auth);
@@ -171,7 +169,7 @@ window.logout = async function() {
     }
 };
 
-// Form submission → Save to MongoDB
+// Form submission → MongoDB API
 document.getElementById('profileForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -180,7 +178,7 @@ document.getElementById('profileForm').addEventListener('submit', async function
     const section = document.getElementById('section').value.trim();
     const branch = document.getElementById('branch').value.trim();
     const phoneNumber = document.getElementById('phoneNumber').value.trim();
-    const semester = parseInt(document.getElementById('semester').value);
+    const semester = document.getElementById('semester').value;
 
     if (!fullName || !rollNumber || !section || !branch || !phoneNumber || !semester) {
         showError('Please fill in all required fields');
@@ -206,7 +204,7 @@ document.getElementById('profileForm').addEventListener('submit', async function
             section,
             branch,
             phoneNumber,
-            semester,
+            semester: parseInt(semester),
             dateOfBirth: document.getElementById('dateOfBirth').value || "",
             subjects: selectedSubjects
         };
@@ -238,5 +236,6 @@ document.getElementById('profileForm').addEventListener('submit', async function
 // Init
 document.addEventListener('DOMContentLoaded', () => {
     updateSubjectsDisplay();
-    document.getElementById('dateOfBirth').max = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('dateOfBirth');
+    dateInput.max = new Date().toISOString().split('T')[0];
 });
