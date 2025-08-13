@@ -154,3 +154,21 @@ const mainNav = document.getElementById('mainNav');
 mobileMenuBtn.addEventListener('click', () =>{
     mainNav.classList.toggle('open');
 });
+
+
+const logoutBtn = document.getElementById('logout');
+
+logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    // Clear all saved data
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Optionally clear dynamic dashboard content
+    if (chatMessages) chatMessages.innerHTML = '';
+    if (tabContents) tabContents.forEach(content => content.innerHTML = '');
+
+    // Redirect to login page
+    window.location.href = '/login';
+});
