@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -380,3 +381,387 @@
     <script src="script.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniConnect - Student Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png"></link>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>UniConnect</span>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <nav id="mainNav">
+            <ul>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#premium">Premium</a></li>
+                <!-- Log Out in mobile menu -->
+                <li class="mobile-only">
+                    <a href="#logout" class="logout-btn">
+                        <i class="fas fa-right-from-bracket"></i> Log Out
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Desktop actions -->
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <!-- <span>Dark Mode</span> -->
+            </button>
+            <a href="#logout" class="logout-btn desktop-only">
+                <i class="fas fa-right-from-bracket"></i> Log Out
+            </a>
+        </div>
+    </header>
+
+
+
+    <div class="container">
+        <div class="dashboard">
+            <div class="sidebar">
+                <div class="user-profile">
+                    <div class="avatar"> 
+                        <!-- <a href="/profile" style="text-decoration: none; color: white;"> -->
+
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="user-info">
+                        <h2>John Dixon</h2>
+                        <p>Computer Science</p>
+                        <p>ID: 2410030278</p>
+                    </div>
+                </div>
+                <div class="sidebar-nav">
+                    <a href="#home" class="active"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="#assignments"><i class="fas fa-tasks"></i> Assignments</a>
+                    <a href="/StudyRes/index.html"><i class="fas fa-file-alt"></i> Study Resources</a>
+                    <a href="/StudyRes/index.html"><i class="fas fa-history"></i> Previous Papers</a>
+                    <a href="/Profile/index.html"><i class="fas fa-user-circle"></i> Profile</a>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <div class="tab-content active" id="homeContent">
+                    <h2 class="section-title"><i class="fas fa-home"></i> Student Dashboard</h2>
+                    <p>Welcome back, John Dixon! Here's your academic overview for this week.</p>
+                    
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="card-header">
+                                <i class="fas fa-book"></i>
+                                <h3>Data Structures And Algorithms</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Updated lecture notes for Module 3 - Trees and Graphs. Includes examples and diagrams.</p>
+                                <a href="#" class="btn">Download Notes</a>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="card-header">
+                                <i class="fas fa-tasks"></i>
+                                <h3>Mathematics</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Assignment 2: Fourier Series. Due date: 15th June 2025.</p>
+                                <a href="#" class="btn">View Assignment</a>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="card-header">
+                                <i class="fas fa-file-alt"></i>
+                                <h3>Digital Electronics And Computer Organisation</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>2024 End Semester Question Paper.</p>
+                                <a href="#" class="btn">View Paper</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="scheduleContent">
+                    <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Academic Schedule</h2>
+                    <p>Your upcoming academic events and exam timetable.</p>
+                    
+                    <div class="calendar">
+                        <div class="calendar-header">June 2025</div>
+                        <div class="calendar-day">Sun</div>
+                        <div class="calendar-day">Mon</div>
+                        <div class="calendar-day">Tue</div>
+                        <div class="calendar-day">Wed</div>
+                        <div class="calendar-day">Thu</div>
+                        <div class="calendar-day">Fri</div>
+                        <div class="calendar-day">Sat</div>
+                        <div class="calendar-day">25</div>
+                        <div class="calendar-day">26</div>
+                        <div class="calendar-day">27</div>
+                        <div class="calendar-day">28</div>
+                        <div class="calendar-day">29</div>
+                        <div class="calendar-day">30</div>
+                        <div class="calendar-day">1</div>
+                        <div class="calendar-day">2</div>
+                        <div class="calendar-day event-day">3<span>Maths Quiz</span></div>
+                        <div class="calendar-day">4</div>
+                        <div class="calendar-day">5</div>
+                        <div class="calendar-day event-day">6<span>Assignment Due</span></div>
+                        <div class="calendar-day">7</div>
+                        <div class="calendar-day">8</div>
+                        <div class="calendar-day event-day">9<span>DECO quiz</span></div>
+                        <div class="calendar-day">10</div>
+                        <div class="calendar-day">11</div>
+                        <div class="calendar-day">12</div>
+                        <div class="calendar-day">13</div>
+                        <div class="calendar-day">14</div>
+                        <div class="calendar-day event-day">15<span>DSA quiz</span></div>
+                        <div class="calendar-day">16</div>
+                        <div class="calendar-day">17</div>
+                        <div class="calendar-day">18</div>
+                        <div class="calendar-day">19</div>
+                        <div class="calendar-day">20</div>
+                        <div class="calendar-day">21</div>
+                        <div class="calendar-day">22</div>
+                        <div class="calendar-day">23</div>
+                        <div class="calendar-day event-day">24<span>Python quiz</span></div>
+                        <div class="calendar-day">25</div>
+                        <div class="calendar-day">26</div>
+                        <div class="calendar-day">27</div>
+                        <div class="calendar-day">28</div>
+                        <div class="calendar-day">29</div>
+                        <div class="calendar-day">30</div>
+                    </div>
+                    
+                    <div class="upcoming-events" style="margin-top: 2rem;">
+                        <h3><i class="fas fa-list"></i> Upcoming Deadlines</h3>
+                        <ul style="list-style: none; margin-top: 1rem;">
+                            <li style="padding: 0.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                                <span>Data Structures Assignment 3</span>
+                                <span>Due: Jun 6, 2025</span>
+                            </li>
+                            <li style="padding: 0.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                                <span>DECO Assignment 2</span>
+                                <span>Due: Jun 9, 2025</span>
+                            </li>
+                            <li style="padding: 0.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                                <span>DSA Assignment 2</span>
+                                <span>Due: Jun 15, 2025</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="communityContent">
+                    <h2 class="section-title"><i class="fas fa-users"></i> Student Community</h2>
+                    <p>Connect with classmates, join groups, and collaborate on projects.</p>
+                    
+                    <div class="community-grid">
+                        <div class="community-card">
+                            <div class="card-header">
+                                <i class="fas fa-laptop-code"></i>
+                                <h3>Computer Science 2023</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Official group for CS 2023 batch. Share resources, ask questions, and collaborate.</p>
+                                <p><strong>Members:</strong> 142</p>
+                                <a href="#" class="btn">Join Community</a>
+                            </div>
+                        </div>
+                        
+                        <div class="community-card">
+                            <div class="card-header">
+                                <i class="fas fa-calculator"></i>
+                                <h3>Algorithms Study Group</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Preparing for Algorithms exam? Join our study sessions and problem-solving groups.</p>
+                                <p><strong>Members:</strong> 87</p>
+                                <a href="#" class="btn">Join Study Group</a>
+                            </div>
+                        </div>
+                        
+                        <div class="community-card">
+                            <div class="card-header">
+                                <i class="fas fa-database"></i>
+                                <h3>Database Club</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>For students interested in database systems, SQL, and data management technologies.</p>
+                                <p><strong>Members:</strong> 64</p>
+                                <a href="#" class="btn">Join Club</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem; background: rgba(2, 48, 71, 0.05); padding: 1.5rem; border-radius: 10px;">
+                        <h3><i class="fas fa-comments"></i> Recent Discussions</h3>
+                        <div style="margin-top: 1rem;">
+                            <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--light); display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user" style="color: var(--secondary);"></i>
+                                    </div>
+                                    <strong>Rick</strong>
+                                </div>
+                                <p style="margin: 0.5rem 0 0 3rem;">Does anyone have notes for the last DECO lecture? I missed the class.</p>
+                                <div style="margin-left: 3rem; font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                                    <span>2 hours ago</span> · 
+                                    <a href="#" style="color: var(--primary);">3 replies</a>
+                                </div>
+                            </div>
+                            <div style="padding: 1rem; border-bottom: 1px solid #eee;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--light); display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user" style="color: var(--secondary);"></i>
+                                    </div>
+                                    <strong>Natasha</strong>
+                                </div>
+                                <p style="margin: 0.5rem 0 0 3rem;">Study group meeting tomorrow at 4 PM in the library for Algorithms revision.</p>
+                                <div style="margin-left: 3rem; font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                                    <span>5 hours ago</span> · 
+                                    <a href="#" style="color: var(--primary);">7 replies</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="premiumContent">
+                    <h2 class="section-title"><i class="fas fa-crown"></i> Premium Features</h2>
+                    <p>Upgrade to Premium for exclusive study resources and personalized support.</p>
+                    
+                    <div class="premium-container">
+                        <h3>What You Get with Premium:</h3>
+                        
+                        <div class="premium-features">
+                            <div class="feature-card">
+                                <i class="fas fa-file-signature"></i>
+                                <h4>Handwritten Notes</h4>
+                                <p>Detailed notes from top students and professors</p>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <i class="fas fa-headset"></i>
+                                <h4>24/7 Doubt Support</h4>
+                                <p>Instant solutions to your academic queries</p>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <i class="fas fa-video"></i>
+                                <h4>Expert Video Solutions</h4>
+                                <p>Step-by-step explanations for complex problems</p>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <i class="fas fa-book-open"></i>
+                                <h4>Premium Study Materials</h4>
+                                <p>Exclusive textbooks summaries and cheat sheets</p>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 1.5rem;">
+                            <h3>Choose Your Plan:</h3>
+                            <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;">
+                                <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px; width: 220px;">
+                                    <h4>Monthly Plan</h4>
+                                    <p style="font-size: 2rem; margin: 0.5rem 0;">₹29.9</p>
+                                    <p>per month</p>
+                                    <button class="btn btn-premium">Subscribe</button>
+                                </div>
+                                
+                                <div style="background: rgba(251, 133, 0, 0.3); padding: 1.5rem; border-radius: 10px; width: 220px; position: relative;">
+                                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent1); color: var(--secondary); padding: 0.3rem 1rem; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">
+                                        MOST POPULAR
+                                    </div>
+                                    <!-- <h4>Semester Plan</h4> -->
+                                    <p style="font-size: 2rem; margin: 0.5rem 0;">₹99.9</p>
+                                    <p>for 6 months</p>
+                                    <button class="btn btn-premium">Subscribe</button>
+                                </div>
+                                
+                                <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px; width: 220px;">
+                                    <h4>Annual Plan</h4>
+                                    <p style="font-size: 2rem; margin: 0.5rem 0;">₹149.9</p>
+                                    <p>per year</p>
+                                    <button class="btn btn-premium">Subscribe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem;">
+                        <h3><i class="fas fa-star"></i> Premium Resources Sample</h3>
+                        <div class="resources-grid" style="margin-top: 1rem;">
+                            <div class="resource-card">
+                                <div class="card-header">
+                                    <i class="fas fa-file-signature"></i>
+                                    <h3>Data Structure And Algorithms Handbook</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Premium illustrated guide with step-by-step problem solving techniques.</p>
+                                    <div style="background: rgba(255, 183, 3, 0.1); padding: 0.8rem; border-radius: 8px; margin-top: 1rem; display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-lock" style="color: var(--accent1);"></i>
+                                        <span>Premium content - Subscribe to access</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="resource-card">
+                                <div class="card-header">
+                                    <i class="fas fa-video"></i>
+                                    <h3>Digital Electronics And Computer Organisation Video Solutions</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>5-hour video course solving previous year exam questions with explanations.</p>
+                                    <div style="background: rgba(255, 183, 3, 0.1); padding: 0.8rem; border-radius: 8px; margin-top: 1rem; display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-lock" style="color: var(--accent1);"></i>
+                                        <span>Premium content - Subscribe to access</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 UniConnect - University Student Portal. All rights reserved.</p>
+        <p>Designed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for students.</p>
+        <p> by <a style="color: beige;" href="https://dev-opify.netlify.app/" target="_blank">Dev-opify</a></p>
+    </footer>
+
+    <!-- Floating Chatbot Button -->
+    <button id="chatbot-toggle">💬</button>
+
+    <!-- Chatbot Chat Window -->
+    <div id="chatbot-window">
+    <div id="chat-header">Career Chatbot <span id="chat-close">×</span></div>
+    <div id="chat-messages"></div>
+    <input type="text" id="chat-input" placeholder="Type a message...">
+    <button id="send-btn">Send</button>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
+>>>>>>> Stashed changes
