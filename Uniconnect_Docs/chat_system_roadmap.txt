@@ -1,0 +1,173 @@
+# Community Chat System - Technical Roadmap & Schemas
+
+This document outlines the roadmap, database schemas, and architecture for building a scalable community chat system.
+
+---
+
+## ⚙️ Core Components
+1. **Auth** → Firebase Auth or custom JWT auth (students log in with email/college ID).
+2. **Chat Service** → WebSockets (Node.js + Socket.io).
+3. **Database Layer**:
+   - **MongoDB** → Store chat messages + group info (fast, append-only).
+   - **Postgres** → Store users, classes, group memberships, analytics.
+4. **Media Handling** → Upload images/files/videos to S3 or Firebase Storage, save URL in MongoDB.
+
+---
+
+## 🗄 MongoDB Schemas (Chat System)
+
+### `groups` collection
+```json
+{
+  "_id": "grp_001",
+  "name": "CS101 - Section A",
+  "members": ["user_01", "user_02", "user_03"], 
+  "createdAt": ISODate("2025-08-20T10:00:00Z"),
+  "updatedAt": ISODate("2025-08-20T10:00:00Z")
+}
+```
+
+### `messages` collection
+```json
+{
+  "_id": "msg_12345",
+  "groupId": "grp_001",
+  "senderId": "user_01",
+  "type": "text",   // text | image | file | video
+  "content": "Hey guys, assignment is due tomorrow!",
+  "mediaUrl": null, // if type = media, store S3/Firebase URL
+  "timestamp": ISODate("2025-08-20T10:05:00Z"),
+  "status": "sent" // sent | delivered | read
+}
+```
+
+✅ **Indexes Needed**:  
+- `groupId + timestamp` (for fast retrieval of recent messages).  
+- `senderId` (for user activity queries).  
+
+---
+
+## 🗂 Object Storage (Media)
+
+- **Bucket Structure Example (S3/GCP/Firebase):**
+  ```
+  /chat_media/{groupId}/{messageId}/{filename}
+  ```
+
+- Store only the **URL** in MongoDB.  
+
+Example message with media:
+```json
+{
+  "_id": "msg_67890",
+  "groupId": "grp_001",
+  "senderId": "user_02",
+  "type": "image",
+  "content": "Assignment PDF",
+  "mediaUrl": "https://storage.example.com/chat_media/grp_001/msg_67890/assignment.pdf",
+  "timestamp": ISODate("2025-08-20T10:06:00Z")
+}
+```
+
+---
+
+## 🐘 Postgres Schemas (Users, Groups, Analytics)
+
+### `users` table
+```sql
+CREATE TABLE users (
+  user_id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  name VARCHAR(255),
+  role VARCHAR(50), -- student | admin | teacher
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### `groups` table
+```sql
+CREATE TABLE groups (
+  group_id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### `group_members` table (many-to-many mapping)
+```sql
+CREATE TABLE group_members (
+  group_id INT REFERENCES groups(group_id),
+  user_id INT REFERENCES users(user_id),
+  PRIMARY KEY (group_id, user_id)
+);
+```
+
+### `analytics_messages` table (optional aggregation)
+```sql
+CREATE TABLE analytics_messages (
+  group_id INT REFERENCES groups(group_id),
+  total_messages BIGINT DEFAULT 0,
+  last_message_at TIMESTAMP
+);
+```
+
+---
+
+## 🔄 Message Flow (High Level)
+
+1. Student logs in → Auth via Firebase/Auth service.  
+2. Joins class group → WebSocket connection established.  
+3. Sends a message:  
+   - If text → save in MongoDB.  
+   - If media → upload to S3 → save URL in MongoDB.  
+4. Real-time broadcast → WebSocket pushes message to all group members.  
+5. Analytics → Async job (cron or event consumer) pushes daily/weekly message counts into Postgres (`analytics_messages`).  
+
+---
+
+## 📈 Scaling Considerations
+
+- 4000 msgs/min (~66/sec) is fine for MongoDB with proper indexes.  
+- Use **capped collections** or TTL for old messages if you don’t want infinite storage.  
+- Paginate messages (fetch last 50 at a time).  
+- Rate-limit users to prevent spam.  
+- For large growth → shard MongoDB by `groupId`.  
+
+---
+
+## ✅ Final Rule of Thumb Recap
+- **Chat messages + groups** → MongoDB  
+- **Media files** → Object Storage (S3/GCP/Firebase)  
+- **Users, memberships, analytics** → Postgres  
+
+---
+
+## 📊 Architecture Diagram (Text Form)
+
+```
+            +--------------------+
+            |   Firebase Auth    |
+            +--------------------+
+                     |
+                     v
+            +--------------------+
+            |   WebSocket Server |
+            | (Node.js + Socket) |
+            +--------------------+
+               |            |
+               v            v
+       +---------------+   +------------------+
+       |   MongoDB     |   |   Object Storage |
+       | (messages)    |   | (S3/Firebase/GCP)|
+       +---------------+   +------------------+
+               |
+               v
+       +---------------+
+       |   Postgres    |
+       | (users,       |
+       |  groups,      |
+       |  analytics)   |
+       +---------------+
+```
+
+---
