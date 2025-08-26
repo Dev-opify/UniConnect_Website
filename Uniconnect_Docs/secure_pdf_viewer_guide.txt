@@ -1,0 +1,117 @@
+# Secure PDF Viewer Implementation (No Download/Print)
+
+This guide explains how to implement a secure PDF viewer for your notes-sharing website.
+The goal is to prevent users from downloading or printing the actual PDF file by only rendering pages as images/canvas.
+
+---
+
+## Step 1: Store PDFs Securely
+- Keep PDFs in a secure location (Google Drive private, Firebase Storage, S3, or your own server).
+- Do NOT make them publicly accessible.
+- Your backend should fetch the PDF and stream it to the frontend through an API endpoint (never direct links).
+
+---
+
+## Step 2: Frontend Rendering with PDF.js
+Use Mozilla's PDF.js library to render PDF pages into `<canvas>` elements, instead of delivering the original PDF.
+
+### Example (Frontend - HTML + JS):
+```html
+<div id="pdf-container"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+<script>
+  const url = "/api/getPdf?id=123"; // backend endpoint
+
+  const container = document.getElementById("pdf-container");
+
+  const loadingTask = pdfjsLib.getDocument(url);
+  loadingTask.promise.then(pdf => {
+    console.log(`PDF loaded with ${pdf.numPages} pages.`);
+
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      pdf.getPage(pageNum).then(page => {
+        const scale = 1.5;
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        container.appendChild(canvas);
+
+        page.render({ canvasContext: context, viewport });
+      });
+    }
+  });
+</script>
+```
+
+✅ Users see rendered images, not the actual PDF.
+
+---
+
+## Step 3: Backend Proxy Endpoint
+The backend should fetch the PDF from storage and stream it securely to the frontend.
+
+### Example (Node.js Express):
+```js
+import express from "express";
+import fetch from "node-fetch";
+
+const app = express();
+
+app.get("/api/getPdf", async (req, res) => {
+  const fileId = req.query.id;
+  
+  // Example: Fetch from Google Drive (replace with your storage logic)
+  const fileUrl = `https://drive.google.com/uc?id=${fileId}&export=download`;
+  const response = await fetch(fileUrl);
+
+  res.setHeader("Content-Type", "application/pdf");
+  res.send(await response.buffer());
+});
+
+app.listen(3000, () => console.log("Server running on port 3000"));
+```
+
+✅ The frontend never sees the actual Google Drive/S3 URL.
+
+---
+
+## Step 4: Disable Right-Click & Printing
+Basic protection to discourage saving.
+
+### CSS
+```css
+canvas {
+  pointer-events: none;
+  user-select: none;
+}
+```
+
+### JavaScript
+```js
+document.addEventListener("contextmenu", e => e.preventDefault());
+```
+
+---
+
+## Step 5: Optional - Watermark Pages
+Overlay user info (like email) on each rendered page to discourage screenshots.
+
+```js
+context.font = "20px Arial";
+context.fillStyle = "rgba(255,0,0,0.5)";
+context.fillText("User: piyush@domain.com", 50, 50);
+```
+
+---
+
+## Final Notes
+- Users cannot download/print the PDF directly.
+- Only rendered images are visible.
+- Screenshots are still possible (cannot be fully prevented without DRM).
+- For stronger protection, consider DRM services like LockLizard, Vitrium, or Adobe DRM.
+

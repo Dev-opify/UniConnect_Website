@@ -1,0 +1,16 @@
+login signup : jwt token
+db: postgres (issue aa sakta hai bocz of string inputs) or MongoDB (websocket)
+postman se check karna results
+backend: nodejs
+server : xpress
+ai : rag in python
+
+bootstrap framework for styling
+
+session/cache management using : redis
+
+backend = Claude
+
+
+
+
