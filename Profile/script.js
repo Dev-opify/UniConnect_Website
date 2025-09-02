@@ -61,7 +61,7 @@ onAuthStateChanged(auth, async (user) => {
         await loadUserProfile(user.uid);
     } else {
         // If not logged in, redirect to the login page
-        window.location.href = '/Login/index.html'; // Adjust path if needed
+        window.location.href = '/login'; // Adjust path if needed
     }
 });
 
@@ -140,7 +140,7 @@ function updateSubjectsDisplay() {
 window.goBack = function() {
     document.querySelector('.container').style.animation = 'slideDown 0.5s ease-out forwards';
     setTimeout(() => {
-        window.location.href = '/Dashboard/index.html'; // Adjust path if needed
+        window.location.href = '/dashboard'; // Adjust path if needed
     }, 500);
 };
 

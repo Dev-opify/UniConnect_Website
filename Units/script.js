@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Add click listener to navigate to the next page, passing both subject and unit info
             card.addEventListener('click', () => {
-                window.location.href = `/Resources/index.html?subject=${subjectCode}&unit=${unitId}`;
+                window.location.href = `/notes/?subject=${subjectCode}&unit=${unitId}`;
             });
 
             unitsGrid.appendChild(card);

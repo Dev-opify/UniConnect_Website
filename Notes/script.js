@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // 3. If no user is logged in, redirect them to the login page
             console.log("User not authenticated. Redirecting to login page...");
-            window.location.href = '/login.html'; // Adjust this path if your login page is elsewhere
+            window.location.href = '/login'; // Adjust this path if your login page is elsewhere
         }
     });
 
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const fileName = resourceMapping[cardId];
                     
                     // MODIFIED: Construct the URL for the PDF viewer page, passing parameters
-                    const viewerUrl = `/pdf-viewer/index.html?subject=${encodeURIComponent(currentSubject)}&unit=${encodeURIComponent(currentUnit)}&type=${encodeURIComponent(fileName)}`;
+                    const viewerUrl = `/pdf-viewer/?subject=${encodeURIComponent(currentSubject)}&unit=${encodeURIComponent(currentUnit)}&type=${encodeURIComponent(fileName)}`;
                     
                     console.log(`Navigating to PDF viewer: ${viewerUrl}`);
                     

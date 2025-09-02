@@ -4,64 +4,66 @@ const fs = require('fs');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
+// Render sets the PORT environment variable. Use it, or default to 3000 for local testing.
 const PORT = process.env.PORT || 3000;
 
 // --- MIDDLEWARE ---
 
-// This tells Express to serve all static files (CSS, JS, images) from the project's root directory.
-// For example, a request for /Dashboard/style.css will serve the file ./Dashboard/style.css
+// JOB #2: THE STATIC FILE SERVER (THE "MAILROOM")
+// This is the most important line for fixing your CSS/JS errors.
+// It tells Express that for any request for a static file (like .css, .js, .png),
+// it should look for that file in the corresponding folder relative to the root directory.
 app.use(express.static(__dirname));
 
+// This allows the server to understand JSON in request bodies.
 app.use(express.json());
 
-// Rate limiting for the API endpoint
+// Rate limiting for your API endpoint to prevent abuse.
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100,
-    message: 'Too many requests from this IP, please try again after 15 minutes'
+    message: 'Too many API requests, please try again after 15 minutes'
 });
 app.use('/api/', apiLimiter);
 
 
-// --- API ROUTES ---
+// --- API ROUTE (FOR SERVING PDFS) ---
 
 app.get('/api/getPdf', (req, res) => {
     try {
         const { subject, unit, type } = req.query;
         if (!subject || !unit || !type) {
-            return res.status(400).json({ error: 'Missing required parameters.' });
+            return res.status(400).json({ error: 'Missing required parameters: subject, unit, or type.' });
         }
         
+        // Security: Sanitize inputs to prevent users from accessing files outside the 'Resources' folder.
         const safeSubject = path.basename(subject);
         const safeUnit = path.basename(unit);
-        const safeType = path.basename(type) + '.pdf';
+        const safeType = path.basename(type) + '.pdf'; // Add the .pdf extension
         
-        // IMPORTANT: The path now includes 'Resources', as per your project structure
         const filePath = path.join(__dirname, 'Resources', safeSubject, safeUnit, safeType);
 
-        console.log(`Attempting to serve file from: ${filePath}`);
+        console.log(`Request received for: ${filePath}`);
 
         if (fs.existsSync(filePath)) {
             res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Cache-Control', 'private, no-store');
             const stream = fs.createReadStream(filePath);
             stream.pipe(res);
         } else {
             console.error(`File not found: ${filePath}`);
-            res.status(404).json({ error: 'The requested resource was not found.' });
+            res.status(404).json({ error: 'The requested PDF was not found.' });
         }
     } catch (error) {
-        console.error('❌ Server error fetching PDF:', error.message);
+        console.error('Server error fetching PDF:', error.message);
         res.status(500).json({ error: 'An internal server error occurred.' });
     }
 });
 
 
-// --- PAGE ROUTING ---
-// This section sends the correct HTML file for each page URL.
+// --- HTML PAGE ROUTING (JOB #1: THE "RECEPTIONIST") ---
+// This section sends the correct HTML file for each clean URL.
 
 app.get('/', (req, res) => {
-    // Assuming your landing page is in a 'Landing' folder
     res.sendFile(path.join(__dirname, 'Landing', 'index.html'));
 });
 
@@ -73,15 +75,15 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'Login', 'index.html'));
 });
 
-app.get('/StudyRes', (req, res) => {
+app.get('/studyRes', (req, res) => {
     res.sendFile(path.join(__dirname, 'StudyRes', 'index.html'));
 });
 
-app.get('/Units', (req, res) => {
+app.get('/units', (req, res) => {
     res.sendFile(path.join(__dirname, 'Units', 'index.html'));
 });
 
-app.get('/Notes', (req, res) => {
+app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, 'Notes', 'index.html'));
 });
 
@@ -89,14 +91,13 @@ app.get('/pdf-viewer', (req, res) => {
     res.sendFile(path.join(__dirname, 'Pdfview', 'index.html'));
 });
 
-app.get('/Profile', (req, res) => {
+app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'Profile', 'index.html'));
 });
 
 
 // --- START THE SERVER ---
-// This is the line that Vercel couldn't use but Render needs.
 app.listen(PORT, () => {
-    console.log(`🚀 UniConnect Server running on http://localhost:${PORT}`);
+    console.log(`🚀 UniConnect Server is live on http://localhost:${PORT}`);
 });
 
