@@ -1,10 +1,13 @@
+// Import the shared auth and db instances from your config file
+import { auth, db } from '../firebase-config.js';
+// Import the necessary functions from the Firebase SDK
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js";
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- 1. AUTHENTICATION & DATA LOADING ---
-    // The 'auth' and 'db' constants are now available globally 
-    // from firebase-config.js, so we can use them directly.
-
-    auth.onAuthStateChanged(user => {
+    onAuthStateChanged(auth, user => {
         if (user) {
             // If user is logged in, fetch their data
             fetchAndDisplayUserData(user.uid);
@@ -12,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // If user is not logged in, redirect to the login page
             console.log("No user is signed in. Redirecting to login page.");
-            // Make sure you have a login.html page in your project's root
             window.location.href = '/login'; 
         }
     });
@@ -23,21 +25,23 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function fetchAndDisplayUserData(uid) {
         try {
-            // Use the 'db' constant from firebase-config.js
-            const userDocRef = db.collection('users').doc(uid);
-            const doc = await userDocRef.get();
+            // Construct the document reference using the modern syntax
+            const userDocRef = doc(db, 'users', uid);
+            const docSnap = await getDoc(userDocRef);
 
-            if (doc.exists) {
-                const userData = doc.data();
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
 
-                // Update user profile in the sidebar
+                // Update user profile in the sidebar with all details
                 document.getElementById('userName').textContent = userData.fullName || 'Student Name';
                 document.getElementById('userMajor').textContent = userData.branch || 'Branch/Major';
-                document.getElementById('userID').textContent = `ID: ${userData.SID || 'N/A'}`;
+                document.getElementById('userID').textContent = `ID: ${userData.rollNumber || 'N/A'}`;
+                document.getElementById('userSemester').textContent = `Semester: ${userData.semester || 'N/A'}`;
+
 
                 // Dynamically generate resource cards from the user's 'subjects' array
                 const resourcesGrid = document.getElementById('resourcesGrid');
-                if (userData.subjects && Array.isArray(userData.subjects)) {
+                if (userData.subjects && Array.isArray(userData.subjects) && userData.subjects.length > 0) {
                     resourcesGrid.innerHTML = ''; // Clear the "Loading..." message
                     userData.subjects.forEach(subject => {
                         const cardHTML = `
@@ -47,14 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <h3>${subject.name}</h3>
                                 </div>
                                 <div class="card-body">
-                                    <p>Notes, assignments, and papers for ${subject.code}.</p>
-                                    <a href="#" class="btn">View Resources</a>
+                                    <p>View notes, assignments, and papers for ${subject.code}.</p>
+                                    <a href="/Units?subject=${subject.code}" class="btn">View Units</a>
                                 </div>
                             </div>`;
                         resourcesGrid.insertAdjacentHTML('beforeend', cardHTML);
                     });
                 } else {
-                     resourcesGrid.innerHTML = '<p>No subjects found for this user.</p>';
+                     resourcesGrid.innerHTML = '<p>You are not enrolled in any subjects. Please update your profile.</p>';
                 }
 
             } else {
@@ -63,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error("Error fetching user data:", error);
+            document.getElementById('userName').textContent = 'Error loading profile';
         }
     }
 
@@ -74,14 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
-                // Use the 'auth' constant from firebase-config.js
-                auth.signOut().catch(error => console.error('Sign out error', error));
+                signOut(auth).catch(error => console.error('Sign out error', error));
                 // The onAuthStateChanged listener will handle the redirect automatically.
             });
         });
     }
 
-    // --- 2. ORIGINAL DASHBOARD FUNCTIONALITY ---
+    // --- 2. ORIGINAL DASHBOARD UI FUNCTIONALITY ---
     
     // Theme Toggle
     const themeToggle = document.getElementById('themeToggle');
@@ -105,32 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Tab Switching
-    const navLinks = document.querySelectorAll('nav a:not(.logout-btn)');
-    const tabContents = document.querySelectorAll('.tab-content');
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const targetId = link.getAttribute('href');
-            if (!targetId || !targetId.startsWith('#')) return;
-            
-            e.preventDefault();
-
-            navLinks.forEach(l => l.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            link.classList.add('active');
-            
-            const targetContent = document.getElementById(`${targetId.substring(1)}Content`);
-            if (targetContent) targetContent.classList.add('active');
-        });
-    });
-
     // Mobile Menu
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mainNav = document.getElementById('mainNav');
     if(mobileMenuBtn && mainNav) {
         mobileMenuBtn.addEventListener('click', () => mainNav.classList.toggle('open'));
     }
-
-    // Chatbot functionality (unchanged)
-    // ...
 });

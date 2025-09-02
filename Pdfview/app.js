@@ -32,31 +32,39 @@ async function loadPdf() {
     // 1. Get parameters from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const subject = urlParams.get('subject');
-    const unit = urlParams.get('unit');
+    const unit = urlParams.get('unit'); // This will be null for PYQ
     const type = urlParams.get('type');
 
-    if (!subject || !unit || !type) {
+    if (!subject || !type) {
         showError("Document details are missing. Please go back and try again.");
         hideLoading();
         return;
     }
 
-    // Update titles
-    document.getElementById('pdf-title').textContent = `${subject} - ${type.replace('.pdf', '')}`;
-    document.getElementById('pdf-subtitle').textContent = `Showing content for ${unit}`;
-
+    // --- THIS IS THE FIX ---
+    // Update titles and construct the API URL conditionally
+    let proxyUrl;
+    if (unit) {
+        // Standard case for notes, tutorials, etc.
+        document.getElementById('pdf-title').textContent = `${subject} - ${type}`;
+        document.getElementById('pdf-subtitle').textContent = `Showing content for ${unit}`;
+        proxyUrl = `/api/getPdf?subject=${subject}&unit=${unit}&type=${type}`;
+    } else {
+        // Special case for PYQ (unit is null)
+        document.getElementById('pdf-title').textContent = `${subject} - ${type}`;
+        document.getElementById('pdf-subtitle').textContent = `Showing Previous Year Questions`;
+        proxyUrl = `/api/getPdf?subject=${subject}&type=${type}`;
+    }
+    
     try {
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-        // 2. Construct the dynamic API URL
-        const proxyUrl = `/api/getPdf?subject=${subject}&unit=${unit}&type=${type}`;
         
+        console.log(`Requesting PDF from backend: ${proxyUrl}`);
         const loadingTask = pdfjsLib.getDocument(proxyUrl);
         currentPdf = await loadingTask.promise;
         
         console.log(`PDF loaded with ${currentPdf.numPages} pages`);
         
-        // Update UI
         document.getElementById('pageInfo').textContent = `${currentPdf.numPages} pages`;
         
         await renderAllPages();
@@ -65,7 +73,7 @@ async function loadPdf() {
     } catch (error) {
         console.error('Error loading PDF:', error);
         hideLoading();
-        showError('Failed to load the document. It might not exist. Please try again.');
+        showError('Failed to load the document. It might not exist in the Resources folder.');
     }
 }
 

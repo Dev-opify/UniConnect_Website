@@ -3,39 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Units - UniConnect</title>
-    <link rel="stylesheet" href="Units/styles.css">
+    <title>UniConnect - Subject Units</title>
+    <link rel="stylesheet" href="/Units/styles.css">
     <link rel="icon" href="/Assets/graduation-cap.png" type="image/png">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <a href="/studyRes" class="back-link">
+            <a href="/StudyRes" id="backLink" class="back-link">
                 <i class="fas fa-arrow-left"></i> Back to Subjects
             </a>
-            <!-- This h1's content will be set by the script -->
-            <h1 id="subjectNameTitle">Loading Subject...</h1>
-            <p>Select a unit to view its learning resources.</p>
+            <h1 id="subjectTitle">Loading Subject...</h1>
+            <p>Select a unit to view its resources.</p>
         </div>
-
-        <!-- The unit cards will be dynamically inserted here -->
         <div class="units-grid" id="unitsGrid">
             <div class="loading-container">
                 <div class="loader"></div>
-                <p>Fetching units...</p>
+                <p>Loading units...</p>
             </div>
         </div>
     </div>
 
-    <!-- Load shared Firebase config first, then the page-specific script -->
-    <script src="../firebase-config.js"></script>
-    <script src="Units/script.js"></script>
+    <!-- The 'type="module"' attribute is the critical fix -->
+    <script src="/firebase-config.js" type="module"></script>
+    <script src="/Units/script.js" type="module"></script>
 </body>
 </html>
 

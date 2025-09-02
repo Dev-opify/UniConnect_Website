@@ -4,14 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UniConnect - Study Resources</title>
-    <link rel="stylesheet" href="StudyRes/styles.css" />
+    <link rel="stylesheet" href="/StudyRes/styles.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link rel="icon" href="/Assets/graduation-cap.png" type="image/png">
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- DEPRECATED v8 SDKs have been removed from here -->
 </head>
 <body>
     <div class="container">
@@ -21,7 +18,6 @@
             <p>Select a subject to view its resources.</p>
         </div>
 
-        <!-- This grid will be populated dynamically by the script -->
         <div class="subjects-grid" id="subjectsGrid">
             <div class="loading-container">
                 <div class="loader"></div>
@@ -30,8 +26,9 @@
         </div>
     </div>
 
-    <!-- Scripts loaded at the end for better performance -->
-    <script src="../firebase-config.js"></script>
-    <script src="StudyRes/script.js"></script>
+    <!-- FIXED: Scripts now correctly use type="module" -->
+    <script src="/firebase-config.js" type="module"></script>
+    <script src="/StudyRes/script.js" type="module"></script>
 </body>
 </html>
+

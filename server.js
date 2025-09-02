@@ -9,10 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 // --- MIDDLEWARE ---
 
-// JOB #2: THE STATIC FILE SERVER (THE "MAILROOM")
-// This is the most important line for fixing your CSS/JS errors.
-// It tells Express that for any request for a static file (like .css, .js, .png),
-// it should look for that file in the corresponding folder relative to the root directory.
+// This serves static files like CSS, client-side JS, and images from their respective folders.
 app.use(express.static(__dirname));
 
 // This allows the server to understand JSON in request bodies.
@@ -32,16 +29,30 @@ app.use('/api/', apiLimiter);
 app.get('/api/getPdf', (req, res) => {
     try {
         const { subject, unit, type } = req.query;
-        if (!subject || !unit || !type) {
-            return res.status(400).json({ error: 'Missing required parameters: subject, unit, or type.' });
+
+        // Validation: Subject and Type are always required.
+        if (!subject || !type) {
+            return res.status(400).json({ error: 'Missing required parameters: subject or type.' });
         }
         
-        // Security: Sanitize inputs to prevent users from accessing files outside the 'Resources' folder.
+        // Security: Sanitize all inputs to prevent path traversal attacks.
         const safeSubject = path.basename(subject);
-        const safeUnit = path.basename(unit);
         const safeType = path.basename(type) + '.pdf'; // Add the .pdf extension
         
-        const filePath = path.join(__dirname, 'Resources', safeSubject, safeUnit, safeType);
+        let filePath;
+
+        // --- THIS IS THE CRITICAL FIX ---
+        // Conditionally build the path based on whether a 'unit' was provided.
+        if (unit) {
+            // Standard case: Path includes the unit folder.
+            // e.g., /Resources/MATHS_0101/Unit 1/note.pdf
+            const safeUnit = path.basename(unit);
+            filePath = path.join(__dirname, 'Resources', safeSubject, safeUnit, safeType);
+        } else {
+            // Special case for PYQ: Path does not include a unit folder.
+            // e.g., /Resources/MATHS_0101/pyq.pdf
+            filePath = path.join(__dirname, 'Resources', safeSubject, safeType);
+        }
 
         console.log(`Request received for: ${filePath}`);
 
@@ -60,7 +71,7 @@ app.get('/api/getPdf', (req, res) => {
 });
 
 
-// --- HTML PAGE ROUTING (JOB #1: THE "RECEPTIONIST") ---
+// --- HTML PAGE ROUTING ---
 // This section sends the correct HTML file for each clean URL.
 
 app.get('/', (req, res) => {

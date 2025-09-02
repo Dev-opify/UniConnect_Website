@@ -1,119 +1,98 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const unitsGrid = document.getElementById('unitsGrid');
-    const subjectNameTitle = document.getElementById('subjectNameTitle');
+// Import the shared auth and db instances from your config file
+import { auth, db } from '../firebase-config.js';
+// Import the necessary functions from the Firebase SDK
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js";
 
-    // 1. Check if a user is logged in
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            // 2. If logged in, get the subject code from the URL
-            getSubjectFromUrlAndFetchUnits();
-        } else {
-            // 3. If not logged in, redirect to the login page
-            console.log("User not authenticated. Redirecting to login page...");
+document.addEventListener('DOMContentLoaded', () => {
+    const subjectTitleEl = document.getElementById('subjectTitle');
+    const unitsGridEl = document.getElementById('unitsGrid');
+    const backLinkEl = document.getElementById('backLink');
+
+    let subjectCode = null;
+
+    // First, check for an authenticated user
+    onAuthStateChanged(auth, user => {
+        if (!user) {
+            // If no user is logged in, redirect them
+            console.log("User not authenticated. Redirecting to login...");
             window.location.href = '/login';
+        } else {
+            // If the user is logged in, get the context from the URL
+            initializePageFromUrl();
         }
     });
 
     /**
-     * Reads the 'subject' query parameter from the URL and triggers the data fetch.
+     * Reads subject information from the URL and triggers the data fetch.
      */
-    function getSubjectFromUrlAndFetchUnits() {
+    function initializePageFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
-        const subjectCode = urlParams.get('subject');
+        subjectCode = urlParams.get('subject');
 
         if (subjectCode) {
-            // A subject code was found in the URL, now fetch its units
-            fetchUnits(subjectCode);
+            subjectTitleEl.textContent = `Units for ${subjectCode}`; // Set a temporary title
+            fetchUnitsForSubject(subjectCode);
         } else {
-            // Handle cases where the URL is missing the subject code
-            console.error("No subject code was provided in the URL.");
-            subjectNameTitle.textContent = "Subject Not Found";
-            unitsGrid.innerHTML = '<p>Could not load units. Please go back and select a subject.</p>';
+            console.error("No 'subject' code found in URL parameters.");
+            unitsGridEl.innerHTML = '<p class="loading-container">Could not identify the subject. Please go back.</p>';
         }
     }
 
     /**
-     * Fetches the specific subject document from the 'units' collection in Firestore.
-     * @param {string} subjectCode The unique identifier for the subject (e.g., "CHEM101").
+     * Fetches the document for the specific subject from the '/units' collection in Firestore.
+     * @param {string} currentSubjectCode The subject code (e.g., "PHYS101").
      */
-    async function fetchUnits(subjectCode) {
+    async function fetchUnitsForSubject(currentSubjectCode) {
         try {
-            const subjectDocRef = db.collection('units').doc(subjectCode);
-            const doc = await subjectDocRef.get();
+            // Construct the reference to the document in the 'units' collection
+            const unitDocRef = doc(db, 'units', currentSubjectCode);
+            const docSnap = await getDoc(unitDocRef);
 
-            if (doc.exists) {
-                const subjectData = doc.data();
-                const unitsArray = subjectData.units;
+            if (docSnap.exists()) {
+                const unitData = docSnap.data();
+                // Update the page title with the full subject name from the database
+                subjectTitleEl.textContent = unitData.subjectName || currentSubjectCode;
                 
-                // Update the page title with the subject's full name from Firestore
-                subjectNameTitle.textContent = subjectData.name || subjectCode;
-
-                if (unitsArray && Array.isArray(unitsArray) && unitsArray.length > 0) {
-                    // If units exist, display them
-                    displayUnits(unitsArray, subjectCode);
+                if (unitData.units && Array.isArray(unitData.units) && unitData.units.length > 0) {
+                    displayUnits(unitData.units);
                 } else {
-                    // Handle case where subject exists but has no units
-                    unitsGrid.innerHTML = '<p>No units have been added for this subject yet.</p>';
+                    unitsGridEl.innerHTML = '<p class="loading-container">No units found for this subject.</p>';
                 }
             } else {
-                // Handle case where the subject code does not match any document
-                console.error(`Document for subject code "${subjectCode}" not found.`);
-                subjectNameTitle.textContent = "Subject Not Found";
-                unitsGrid.innerHTML = `<p>We couldn't find any information for the subject: ${subjectCode}.</p>`;
+                console.error(`Document for subject '${currentSubjectCode}' not found in 'units' collection.`);
+                unitsGridEl.innerHTML = '<p class="loading-container">Units for this subject are not available yet.</p>';
             }
         } catch (error) {
-            console.error("Error fetching units from Firestore:", error);
-            subjectNameTitle.textContent = "Error";
-            unitsGrid.innerHTML = '<p>There was an error loading the units. Please try again later.</p>';
+            console.error("Error fetching units:", error);
+            unitsGridEl.innerHTML = '<p class="loading-container">There was an error loading the units.</p>';
         }
     }
 
     /**
-     * Dynamically creates and injects the unit cards into the grid.
-     * @param {Array<Object>} units An array of unit objects (e.g., [{ name: 'Introduction', number: 1 }, ...]).
-     * @param {string} subjectCode The code of the parent subject.
+     * Clears the grid and populates it with unit cards.
+     * @param {Array<Object>} units An array of unit objects from Firestore.
      */
-    function displayUnits(units, subjectCode) {
-        unitsGrid.innerHTML = ''; // Clear the "Fetching units..." message
-
-        // A color palette to cycle through for the unit number backgrounds
-        const cardColors = [
-            'linear-gradient(135deg, #667eea, #764ba2)',
-            'linear-gradient(135deg, #f093fb, #f5576c)',
-            'linear-gradient(135deg, #4facfe, #00f2fe)',
-            'linear-gradient(135deg, #43e97b, #38f9d7)',
-            'linear-gradient(135deg, #fa709a, #fee140)',
-            'linear-gradient(135deg, #a8edea, #fed6e3)'
-        ];
-
-        // Sort units by number to ensure they appear in order
-        units.sort((a, b) => a.number - b.number);
+    function displayUnits(units) {
+        unitsGridEl.innerHTML = ''; // Clear loading indicator
 
         units.forEach((unit, index) => {
-            const card = document.createElement('div');
-            card.className = 'unit-card';
-            card.style.animationDelay = `${index * 0.1}s`; // Staggered animation effect
-
-            const unitId = `unit${unit.number}`; 
+            const card = document.createElement('a');
+            // The href now points to the Notes page, passing BOTH subject and unit info
+            card.href = `/Notes?subject=${encodeURIComponent(subjectCode)}&unit=${encodeURIComponent(unit.id)}`;
+            card.className = 'unit-card'; // Assumes you have styling for .unit-card
+            card.style.animationDelay = `${index * 0.1}s`;
 
             card.innerHTML = `
                 <div class="unit-info">
-                    <div class="unit-number" style="background: ${cardColors[index % cardColors.length]};">
-                        ${unit.number}
-                    </div>
+                    <div class="unit-number unit-${index + 1}">${index + 1}</div>
                     <div class="unit-title">${unit.name}</div>
                 </div>
                 <svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
             `;
-
-            // Add click listener to navigate to the next page, passing both subject and unit info
-            card.addEventListener('click', () => {
-                window.location.href = `/notes/?subject=${subjectCode}&unit=${unitId}`;
-            });
-
-            unitsGrid.appendChild(card);
+            unitsGridEl.appendChild(card);
         });
     }
 });

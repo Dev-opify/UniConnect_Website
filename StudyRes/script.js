@@ -1,8 +1,13 @@
+// Import the shared auth and db instances from your config file
+import { auth, db } from '../firebase-config.js';
+// Import the necessary functions from the Firebase SDK
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     const subjectsGrid = document.getElementById('subjectsGrid');
 
-    // Listen for authentication state changes
-    auth.onAuthStateChanged(user => {
+    onAuthStateChanged(auth, user => {
         if (user) {
             // User is signed in, fetch their subjects
             fetchUserSubjects(user.uid);
@@ -21,26 +26,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!subjectsGrid) return;
 
         try {
-            const userDocRef = db.collection('users').doc(uid);
-            const doc = await userDocRef.get();
+            // Use the modern 'doc' and 'getDoc' functions, which is the correct syntax
+            const userDocRef = doc(db, 'users', uid);
+            const docSnap = await getDoc(userDocRef);
 
-            if (doc.exists) {
-                const userData = doc.data();
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
                 const subjects = userData.subjects;
 
-                // Check if the user has a subjects array
                 if (subjects && Array.isArray(subjects) && subjects.length > 0) {
                     displaySubjects(subjects);
                 } else {
-                    subjectsGrid.innerHTML = '<p>You are not enrolled in any subjects yet.</p>';
+                    subjectsGrid.innerHTML = '<p class="loading-container">You have not added any subjects. Please update your profile.</p>';
                 }
             } else {
-                console.error("No such user document!");
-                subjectsGrid.innerHTML = '<p>Could not find your user profile.</p>';
+                console.error("User document not found!");
+                subjectsGrid.innerHTML = '<p class="loading-container">Could not find your user profile.</p>';
             }
         } catch (error) {
             console.error("Error fetching user subjects:", error);
-            subjectsGrid.innerHTML = '<p>There was an error loading your subjects. Please try again later.</p>';
+            let userMessage = 'There was an error loading your subjects. Please try again later.';
+            // Provide specific feedback if the error is permission-related
+            if (error.code === 'permission-denied') {
+                userMessage = 'Permission denied. Please check your Firestore Security Rules.';
+            }
+            subjectsGrid.innerHTML = `<p class="loading-container">${userMessage}</p>`;
         }
     }
 
@@ -49,25 +59,24 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {Array<Object>} subjects An array of subject objects.
      */
     function displaySubjects(subjects) {
-        // Clear the loading indicator
-        subjectsGrid.innerHTML = '';
+        subjectsGrid.innerHTML = ''; // Clear the loading indicator
 
-        // Predefined styles for the cards to cycle through
         const cardStyles = [
-            { icon: 'fa-calculator', color: 'linear-gradient(135deg, #667eea, #764ba2)' },
-            { icon: 'fa-flask', color: 'linear-gradient(135deg, #f093fb, #f5576c)' },
-            { icon: 'fa-book-open', color: 'linear-gradient(135deg, #4facfe, #00f2fe)' },
-            { icon: 'fa-landmark', color: 'linear-gradient(135deg, #43e97b, #38f9d7)' },
-            { icon: 'fa-palette', color: 'linear-gradient(135deg, #fa709a, #fee140)' },
-            { icon: 'fa-laptop-code', color: 'linear-gradient(135deg, #a8edea, #fed6e3)' }
+            { icon: 'fa-laptop-code', color: 'linear-gradient(135deg, #667eea, #764ba2)' },
+            { icon: 'fa-microchip', color: 'linear-gradient(135deg, #f093fb, #f5576c)' },
+            { icon: 'fa-database', color: 'linear-gradient(135deg, #4facfe, #00f2fe)' },
+            { icon: 'fa-atom', color: 'linear-gradient(135deg, #43e97b, #38f9d7)' },
+            { icon: 'fa-terminal', color: 'linear-gradient(135deg, #fa709a, #fee140)' },
+            { icon: 'fa-mobile-alt', color: 'linear-gradient(135deg, #a8edea, #fed6e3)' }
         ];
 
         subjects.forEach((subject, index) => {
-            // Cycle through the styles array
+            // Cycle through the predefined styles for visual variety
             const style = cardStyles[index % cardStyles.length];
-
+            
             const card = document.createElement('a');
-            card.href = `/Units/index.html?subject=${encodeURIComponent(subject.code)}`; // Example of dynamic link
+            // Construct the correct URL for the next page, passing the subject code
+            card.href = `/Units?subject=${encodeURIComponent(subject.code)}`;
             card.className = 'subject-card';
             card.style.animationDelay = `${index * 0.1}s`;
 
@@ -88,3 +97,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+

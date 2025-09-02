@@ -1,10 +1,9 @@
-// Import specific functions we need from Firebase SDKs
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+// Import specific functions we need from the same Firebase v9 SDK
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js";
 
 // Import our initialized auth and db from the central config file
-// The path '../' goes up one directory from /Profile to /public
-import { auth, db } from '../firebase-config.js';
+import { auth, db } from '/firebase-config.js';
 
 // Subject mapping for display
 const subjectMapping = {
@@ -61,7 +60,7 @@ onAuthStateChanged(auth, async (user) => {
         await loadUserProfile(user.uid);
     } else {
         // If not logged in, redirect to the login page
-        window.location.href = '/login'; // Adjust path if needed
+        window.location.href = '/login';
     }
 });
 
@@ -140,7 +139,7 @@ function updateSubjectsDisplay() {
 window.goBack = function() {
     document.querySelector('.container').style.animation = 'slideDown 0.5s ease-out forwards';
     setTimeout(() => {
-        window.location.href = '/dashboard'; // Adjust path if needed
+        window.location.href = '/dashboard';
     }, 500);
 };
 
@@ -187,3 +186,4 @@ document.getElementById('profileForm').addEventListener('submit', async function
         showMessage('errorMessage', "Failed to save profile. Please try again.", true);
     }
 });
+

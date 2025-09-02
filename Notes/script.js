@@ -1,85 +1,84 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Import the shared auth instance from your config file
+import { auth } from '../firebase-config.js';
+// Import the necessary function from the Firebase SDK
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
 
+document.addEventListener('DOMContentLoaded', () => {
     const subjectTitleEl = document.getElementById('subjectTitle');
     const unitSubtitleEl = document.getElementById('unitSubtitle');
     const backLinkEl = document.getElementById('backLink');
 
-    let subjectCode, unitId;
-
-    // This assumes your firebase-config.js has already initialized 'auth' globally
-    if (typeof auth === 'undefined') {
-        console.error("Firebase has not been initialized. Make sure firebase-config.js is loaded before this script.");
-        subjectTitleEl.textContent = "Configuration Error";
-        return;
-    }
-
-    // 1. Check for an authenticated user
-    auth.onAuthStateChanged(user => {
+    // 1. Check for an authenticated user first
+    onAuthStateChanged(auth, user => {
         if (user) {
-            // 2. If the user is logged in, get the context from the URL
+            // 2. If the user is logged in, set up the page using URL parameters
             initializePageFromUrl();
         } else {
-            // 3. If no user is logged in, redirect them to the login page
-            console.log("User not authenticated. Redirecting to login page...");
-            window.location.href = '/login'; // Adjust this path if your login page is elsewhere
+            // 3. If no user is logged in, redirect them
+            console.log("User not authenticated. Redirecting to login...");
+            window.location.href = '/login';
         }
     });
 
     /**
-     * Reads subject and unit information from the URL's query parameters to set up the page.
+     * Reads subject and unit info from the URL to set up page titles and links.
      */
     function initializePageFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
-        subjectCode = urlParams.get('subject');
-        unitId = urlParams.get('unit'); // This will be like "unit3"
+        const subjectCode = urlParams.get('subject');
+        const unitId = urlParams.get('unit'); // This will be like "Unit 1"
 
         if (subjectCode && unitId) {
-            // Extract the number from the unitId string (e.g., "unit3" becomes "3")
-            const unitNumber = unitId.replace('unit', '');
-            
-            // Update the page header with the specific subject and unit information
-            subjectTitleEl.textContent = subjectCode; // For a better UX, you could fetch the full subject name from Firestore here
-            unitSubtitleEl.textContent = `Resources for Unit ${unitNumber}`;
+            // Update the page header with the context
+            subjectTitleEl.textContent = subjectCode;
+            unitSubtitleEl.textContent = `Resources for ${unitId}`;
             
             // Set the "Back" link to correctly point to the previous Units page
-            backLinkEl.href = `/Units/index.html?subject=${encodeURIComponent(subjectCode)}`;
+            backLinkEl.href = `/Units?subject=${encodeURIComponent(subjectCode)}`;
 
-            // Attach the click listeners that will build the URL for the PDF viewer
-            setupCardClickListeners(subjectCode, `Unit ${unitNumber}`);
-
+            // Attach click listeners to the cards
+            setupCardClickListeners(subjectCode, unitId);
         } else {
-            // This is an error case in case someone navigates to this page directly
+            // Handle cases where the URL is missing information
             subjectTitleEl.textContent = "Error";
-            unitSubtitleEl.textContent = "Could not identify the subject or unit. Please go back.";
+            unitSubtitleEl.textContent = "Could not identify the subject or unit.";
             console.error("Missing 'subject' or 'unit' from URL parameters.");
         }
     }
 
     /**
-     * Attaches click event listeners to each of the resource cards.
-     * @param {string} currentSubject - The subject code from the URL (e.g., "PHYS101").
+     * Attaches click event listeners to each resource card.
+     * @param {string} currentSubject - The subject code (e.g., "PHYS101").
      * @param {string} currentUnit - The unit folder name (e.g., "Unit 3").
      */
     function setupCardClickListeners(currentSubject, currentUnit) {
+        // Maps the ID of the card to the filename it represents
         const resourceMapping = {
-            'notes-card': 'note.pdf',
-            'tutorials-card': 'tutorial.pdf',
-            'pyq-card': 'pyq.pdf',
-            'study-materials-card': 'studymaterial.pdf'
+            'notes-card': 'note',
+            'tutorials-card': 'tutorial',
+            'pyq-card': 'pyq',
+            'study-materials-card': 'studymaterial'
         };
 
         for (const cardId in resourceMapping) {
             const cardElement = document.getElementById(cardId);
             if (cardElement) {
                 cardElement.addEventListener('click', () => {
-                    const fileName = resourceMapping[cardId];
+                    const fileType = resourceMapping[cardId];
+                    let viewerUrl;
+
+                    // Add a special condition for the Previous Year Questions card
+                    if (cardId === 'pyq-card') {
+                        // This URL format omits the 'unit' parameter as requested
+                        viewerUrl = `/pdf-viewer?subject=${encodeURIComponent(currentSubject)}&type=${encodeURIComponent(fileType)}`;
+                        console.log(`Navigating to PYQ viewer (unit-independent): ${viewerUrl}`);
+                    } else {
+                        // This is the standard URL format for all other resource types
+                        viewerUrl = `/pdf-viewer?subject=${encodeURIComponent(currentSubject)}&unit=${encodeURIComponent(currentUnit)}&type=${encodeURIComponent(fileType)}`;
+                        console.log(`Navigating to PDF viewer: ${viewerUrl}`);
+                    }
                     
-                    // MODIFIED: Construct the URL for the PDF viewer page, passing parameters
-                    const viewerUrl = `/pdf-viewer/?subject=${encodeURIComponent(currentSubject)}&unit=${encodeURIComponent(currentUnit)}&type=${encodeURIComponent(fileName)}`;
-                    
-                    console.log(`Navigating to PDF viewer: ${viewerUrl}`);
-                    
-                    // Navigate to the new viewer page
+                    // Navigate to the viewer page
                     window.location.href = viewerUrl;
                 });
             }
