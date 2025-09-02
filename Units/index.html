@@ -3,80 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Units - Explore Your Academic Journey</title>
+    <title>Units - UniConnect</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png"></link>
+    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Units</h1>
-            <p>Explore your academic journey</p>
+            <a href="/StudyRes" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Subjects
+            </a>
+            <!-- This h1's content will be set by the script -->
+            <h1 id="subjectNameTitle">Loading Subject...</h1>
+            <p>Select a unit to view its learning resources.</p>
         </div>
 
-        <div class="units-grid">
-            <div class="unit-card" onclick="navigateToUnit(1)">
-                <div class="unit-info">
-                    <div class="unit-number unit-1">1</div>
-                    <div class="unit-title">Unit 1</div>
-                </div>
-                <svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </div>
-
-            <div class="unit-card" onclick="navigateToUnit(2)">
-                <div class="unit-info">
-                    <div class="unit-number unit-2">2</div>
-                    <div class="unit-title">Unit 2</div>
-                </div>
-                <svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </div>
-
-            <div class="unit-card" onclick="navigateToUnit(3)">
-                <div class="unit-info">
-                    <div class="unit-number unit-3">3</div>
-                    <div class="unit-title">Unit 3</div>
-                </div>
-                <svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </div>
-
-            <div class="unit-card" onclick="navigateToUnit(4)">
-                <div class="unit-info">
-                    <div class="unit-number unit-4">4</div>
-                    <div class="unit-title">Unit 4</div>
-                </div>
-                <svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </div>
-
-            <div class="unit-card" onclick="navigateToUnit(5)">
-                <div class="unit-info">
-                    <div class="unit-number unit-5">5</div>
-                    <div class="unit-title">Unit 5</div>
-                </div>
-                <svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </div>
-
-            <div class="unit-card" onclick="navigateToUnit(6)">
-                <div class="unit-info">
-                    <div class="unit-number PYQ">6</div>
-                    <div class="unit-title">PYQ</div>
-                </div>
-                <svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
+        <!-- The unit cards will be dynamically inserted here -->
+        <div class="units-grid" id="unitsGrid">
+            <div class="loading-container">
+                <div class="loader"></div>
+                <p>Fetching units...</p>
             </div>
         </div>
     </div>
 
+    <!-- Load shared Firebase config first, then the page-specific script -->
+    <script src="/firebase-config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+

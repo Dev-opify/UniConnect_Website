@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+    --primary-start: #667eea;
+    --primary-end: #764ba2;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,26 +12,55 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-end) 100%);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
 }
 
-.subtitle {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 18px;
-    font-weight: 400;
-    margin-bottom: 50px;
+.header {
     text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: background 0.3s ease;
+}
+
+.back-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+#subjectTitle {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+#unitSubtitle {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-weight: 400;
+    opacity: 0.9;
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     max-width: 1200px;
     width: 100%;
@@ -37,7 +73,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
     backdrop-filter: blur(10px);
@@ -45,7 +81,7 @@ body {
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .card-content {
@@ -61,19 +97,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     font-size: 24px;
-    font-weight: bold;
 }
 
-.icon-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
-.icon-2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
-.icon-3 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-.icon-4 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-.icon-5 { background: linear-gradient(135deg, #fa709a, #fee140); }
+.icon-1 { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+.icon-2 { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+.icon-3 { background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; }
+.icon-4 { background: linear-gradient(135deg, #43e97b, #38f9d7); color: white; }
 
 .card-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
     color: #333;
 }
@@ -91,28 +124,25 @@ body {
     transform: translateX(5px);
 }
 
-.pyq-card .icon-container {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-@media (max-width: 968px) {
+@media (max-width: 768px) {
     .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 480px) {
+    body {
+        padding: 20px 15px;
+    }
     .grid-container {
         grid-template-columns: 1fr;
         gap: 15px;
     }
-    
     .card {
         padding: 25px;
     }
-    
     .card-title {
-        font-size: 20px;
+        font-size: 18px;
     }
 }
+

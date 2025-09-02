@@ -4,14 +4,7 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 // Firebase config
-const firebaseConfig = {
-    apiKey: "AIzaSyDsNHMQKy4x2uYP2kdiNe_jbUeArpYjrbw",
-    authDomain: "uniconnect-a880a.firebaseapp.com",
-    projectId: "uniconnect-a880a",
-    storageBucket: "uniconnect-a880a.firebasestorage.app",
-    messagingSenderId: "358941920538",
-    appId: "1:358941920538:web:7b2da20230edcf1a61b0a3"
-};
+
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);

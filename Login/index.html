@@ -1,13 +1,17 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniConnect - Login & Register</title>
-    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png"></link>
+    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login-style.css">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 </head>
 <body>
     <a href="https://uniconnect.tech" class="back-to-home">
@@ -43,7 +47,7 @@
 
         <div class="info-text login">
             <h2 class="animation" style="--i:0; --j:20">Welcome Back!</h2>
-            <p class="animation" style="--i:1; --j:21">Access your student portal and continue your academic journey with UniConnect.</p>
+            <p class="animation" style="--i:1; --j:21">Access your student portal and continue your academic journey.</p>
         </div>
 
         <!-- Register Form -->
@@ -81,10 +85,12 @@
 
         <div class="info-text register">
             <h2 class="animation" style="--i:17; --j:0;">Join UniConnect!</h2>
-            <p class="animation" style="--i:18; --j:1;">Create your account and start your amazing academic journey with our comprehensive student portal.</p>
+            <p class="animation" style="--i:18; --j:1;">Create your account to start your academic journey.</p>
         </div>
     </div>
 
-    <script src="script.js" type="module"></script>
+    <!-- MODIFIED: Scripts are now loaded in the correct order -->
+    <script src="firebase-config.js"></script>
+    <script src="login-script.js"></script>
 </body>
 </html>

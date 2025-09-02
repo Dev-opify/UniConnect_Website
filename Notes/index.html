@@ -5,73 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academic Resources</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png"></link>
+    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-    <p class="subtitle">Explore your academic journey</p>
+    <div class="header">
+        <!-- The back link will be dynamically updated by the script -->
+        <a href="#" id="backLink" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Units
+        </a>
+        <!-- These titles will be populated by the script -->
+        <h1 id="subjectTitle">Loading...</h1>
+        <p id="unitSubtitle">Select a resource to view</p>
+    </div>
     
     <div class="grid-container">
-        <div class="card">
+        <!-- Each card now has a unique ID -->
+        <div class="card" id="notes-card">
             <div class="card-content">
-                <div class="icon-container icon-1">
-                    📝
-                </div>
+                <div class="icon-container icon-1">📝</div>
                 <div class="card-title">Notes</div>
             </div>
             <div class="arrow">›</div>
         </div>
         
-        <div class="card">
+        <div class="card" id="tutorials-card">
             <div class="card-content">
-                <div class="icon-container icon-2">
-                    📚
-                </div>
+                <div class="icon-container icon-2">📚</div>
                 <div class="card-title">Tutorial Sheets</div>
             </div>
             <div class="arrow">›</div>
         </div>
         
-        <div class="card">
+        <div class="card" id="pyq-card">
             <div class="card-content">
-                <div class="icon-container icon-3">
-                    🔗
-                </div>
-                <div class="card-title">Other Resources</div>
+                <div class="icon-container icon-3">📋</div>
+                <div class="card-title">Previous Year Questions</div>
             </div>
             <div class="arrow">›</div>
         </div>
         
-        <div class="card">
+        <div class="card" id="study-materials-card">
             <div class="card-content">
-                <div class="icon-container icon-4">
-                    📖
-                </div>
+                <div class="icon-container icon-4">📖</div>
                 <div class="card-title">Study Materials</div>
             </div>
             <div class="arrow">›</div>
         </div>
-        
-        <div class="card">
-            <div class="card-content">
-                <div class="icon-container icon-5">
-                    💡
-                </div>
-                <div class="card-title">Quick References</div>
-            </div>
-            <div class="arrow">›</div>
-        </div>
-        
-        <!-- <div class="card pyq-card">
-            <div class="card-content">
-                <div class="icon-container">
-                    📋
-                </div>
-                <div class="card-title">PYQ</div>
-            </div>
-            <div class="arrow">›</div>
-        </div> -->
     </div>
 
+    <!-- Firebase and page-specific scripts -->
+    <script src="/firebase-config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+

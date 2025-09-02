@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniConnect - Secure Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <!-- These elements will be updated dynamically by the script -->
+            <h1 id="pdf-title">Loading Document...</h1>
+            <p id="pdf-subtitle">Secure document viewing</p>
+        </header>
+
+        <div class="main-content">
+            <div class="controls">
+                <div class="zoom-controls">
+                    <button onclick="changeZoom(-0.25)">🔍-</button>
+                    <span id="zoomLevel">100%</span>
+                    <button onclick="changeZoom(0.25)">🔍+</button>
+                </div>
+                <div class="page-info" id="pageInfo">Loading...</div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Loading your document...</p>
+            </div>
+
+            <div class="error" id="error" style="display: none;">
+                <p id="errorMessage"></p>
+                <button onclick="loadPdf()">Reload Document</button>
+            </div>
+
+            <div id="pdf-container" class="pdf-container"></div>
+        </div>
+    </div>
+
+    <div class="watermark" id="watermark">
+        <span>UniConnect</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
