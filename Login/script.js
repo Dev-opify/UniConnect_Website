@@ -1,3 +1,15 @@
+// Import the necessary functions from Firebase SDKs and your config file
+import { auth, db } from '../firebase-config.js';
+import { 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+import { 
+    doc, 
+    setDoc 
+} from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js";
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- DOM ELEMENT SELECTORS ---
@@ -8,14 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
 
     // Check if user is already logged in
-    auth.onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, (user) => {
         if (user) {
-            console.log("User already signed in. Redirecting to dashboard.");
-            window.location.href = '/dashboard'; // Redirect to your dashboard page
+            // If the user is logged in and they are on the login page, redirect them away.
+            console.log("User is already signed in. Redirecting to dashboard.");
+            window.location.href = '/dashboard'; 
         }
     });
 
-    // --- UI INTERACTION ---
+    // --- UI INTERACTION (FOR SWITCHING FORMS) ---
     if (registerLink) {
         registerLink.onclick = (e) => {
             e.preventDefault();
@@ -52,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn) {
             if (isLoading) {
                 btn.disabled = true;
-                btn.innerHTML = '<span class="loading"></span>';
+                btn.innerHTML = '<span class="loading"></span> Processing...';
             } else {
                 btn.disabled = false;
                 btn.innerHTML = buttonId === 'loginBtn' ? 'Login' : 'Sign Up';
@@ -71,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Basic validation
             if (!name) return showError('registerError', 'Full Name is required.');
             if (password.length < 6) return showError('registerError', 'Password must be at least 6 characters.');
             if (password !== confirmPassword) return showError('registerError', 'Passwords do not match.');
@@ -81,17 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // 1. Create user in Firebase Authentication
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // 2. Create a corresponding user document in Firestore
-                const userDocRef = db.collection('users').doc(user.uid);
+                // 2. Create a corresponding user document in Firestore using modern syntax
+                const userDocRef = doc(db, 'users', user.uid);
 
-                // Default data structure for a new user
                 const newUser = {
                     fullName: name,
                     email: user.email,
-                    SID: `SID${new Date().getTime().toString().slice(-6)}`, // Simple unique student ID
+                    SID: `SID${new Date().getTime().toString().slice(-6)}`,
                     branch: "Not specified",
                     section: "N/A",
                     semester: 1,
@@ -99,9 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     createdAt: new Date().toISOString(),
                 };
 
-                await userDocRef.set(newUser);
+                await setDoc(userDocRef, newUser);
                 
-                showSuccess('registerSuccess', 'Account created! Redirecting to dashboard...');
+                showSuccess('registerSuccess', 'Account created! Redirecting...');
+                // The onAuthStateChanged listener will handle the redirect automatically.
+                // We add a delay for the user to see the success message.
                 setTimeout(() => window.location.href = '/dashboard', 2000);
 
             } catch (error) {
@@ -132,10 +145,10 @@ document.addEventListener('DOMContentLoaded', () => {
             showError('loginError', ''); // Clear previous errors
 
             try {
-                await auth.signInWithEmailAndPassword(email, password);
+                await signInWithEmailAndPassword(auth, email, password);
                 showSuccess('loginSuccess', 'Login successful! Redirecting...');
-                // The onAuthStateChanged listener will handle the redirect.
-                // We add a small delay here for the user to see the success message.
+                // The onAuthStateChanged listener will handle the redirect, but we give a timeout
+                // to ensure the user sees the success message.
                 setTimeout(() => window.location.href = '/dashboard', 1500);
 
             } catch (error) {
@@ -144,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
                     msg = 'Incorrect email or password.';
                 } else if (error.code === 'auth/too-many-requests') {
-                    msg = 'Access temporarily disabled due to too many failed login attempts. Please reset your password or try again later.';
+                    msg = 'Access temporarily disabled due to too many failed login attempts.';
                 }
                 showError('loginError', msg);
             } finally {

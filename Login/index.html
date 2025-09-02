@@ -6,12 +6,8 @@
     <title>UniConnect - Login & Register</title>
     <link rel="icon" href="/Assets/graduation-cap.png" type="image/png">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="Login/styles.css">
-
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- FIXED: Correct root-relative path to your stylesheet -->
+    <link rel="stylesheet" href="/Login/style.css">
 </head>
 <body>
     <a href="/" class="back-to-home">
@@ -89,8 +85,8 @@
         </div>
     </div>
 
-    <!-- MODIFIED: Scripts are now loaded in the correct order -->
-    <script src="../firebase-config.js"></script>
-    <script src="Login/script.js"></script>
+    <!-- FIXED: Correct root-relative paths and load as modules -->
+    <script src="/firebase-config.js" type="module"></script>
+    <script src="/Login/script.js" type="module"></script>
 </body>
 </html>
