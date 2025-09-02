@@ -7,26 +7,18 @@ import { auth, db } from '/firebase-config.js';
 
 // Subject mapping for display
 const subjectMapping = {
-    'DSA101': 'Data Structures and Algorithms',
-    'OOP201': 'Object Oriented Programming',
-    'DBMS301': 'Database Management System',
-    'CN401': 'Computer Networks',
-    'OS501': 'Operating Systems',
-    'SE601': 'Software Engineering',
-    'MATH101': 'Mathematics',
-    'PHY101': 'Physics',
-    'CHEM101': 'Chemistry',
-    'DECO201': 'Digital Electronics',
-    'MP301': 'Microprocessors',
-    'CA401': 'Computer Architecture',
-    'AI501': 'Artificial Intelligence',
-    'ML501': 'Machine Learning',
-    'WD701': 'Web Development',
-    'MAD801': 'Mobile App Development',
-    'PY101': 'Python Programming',
-    'JAVA201': 'Java Programming',
-    'CPP301': 'C++ Programming',
-    'DS401': 'Data Science'
+
+     'AIML_0101': 'Artificial Intelligence and Machine Learning' ,
+     'C_0101': 'Programming in C' ,
+     'COM_0101': 'Communication Skills for Engineers' ,
+     'PHY_0101': 'Physics' ,
+     'EVS_0101': 'Enbironmental Studies' ,
+     'MATHS_0101': 'Mathematics 1' ,
+     'DECO_0102': 'Digital Electronics and Computer Organisation' ,
+     'DSA_0102': 'Data Structure and Algo' ,
+     'PYTHON_0102': 'Python Programming' ,
+     'M_F_C_0102': 'Mathematics for Computing' ,
+     'VERBAL_0102':' Verbal Competency and Speaking Skills' 
 };
 
 let selectedSubjects = [];
