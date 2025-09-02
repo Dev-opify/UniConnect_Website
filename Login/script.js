@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             console.log("User already signed in. Redirecting to dashboard.");
-            window.location.href = '/index.html'; // Redirect to your dashboard page
+            window.location.href = '/dashboard'; // Redirect to your dashboard page
         }
     });
 
@@ -95,17 +95,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     branch: "Not specified",
                     section: "N/A",
                     semester: 1,
-                    subjects: [
-                        { code: "CS101", name: "Introduction to Programming" },
-                        { code: "MA101", name: "Calculus I" }
-                    ],
+                    subjects: [],
                     createdAt: new Date().toISOString(),
                 };
 
                 await userDocRef.set(newUser);
                 
                 showSuccess('registerSuccess', 'Account created! Redirecting to dashboard...');
-                setTimeout(() => window.location.href = '/index.html', 2000);
+                setTimeout(() => window.location.href = '/dashboard', 2000);
 
             } catch (error) {
                 console.error("Registration Error:", error);
@@ -139,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showSuccess('loginSuccess', 'Login successful! Redirecting...');
                 // The onAuthStateChanged listener will handle the redirect.
                 // We add a small delay here for the user to see the success message.
-                setTimeout(() => window.location.href = '/index.html', 1500);
+                setTimeout(() => window.location.href = '/dashboard', 1500);
 
             } catch (error) {
                 console.error("Login Error:", error);
