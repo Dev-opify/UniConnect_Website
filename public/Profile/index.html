@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniConnect - Profile</title>
-    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png"></link>
+    <link rel="icon" href="/Assets/graduation-cap.png" type="image/png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,27 +29,27 @@
 
             <div class="form-group">
                 <label class="form-label">Roll Number *</label>
-                <input type="text" class="form-input" id="rollNumber" placeholder="Enter roll number (e.g., 2410030255)" required>
+                <input type="text" class="form-input" id="rollNumber" placeholder="Enter roll number" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label">Section *</label>
-                <input type="text" class="form-input" id="section" placeholder="Enter section (e.g., 2CSE5)" required>
+                <input type="text" class="form-input" id="section" placeholder="Enter section" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label">Branch *</label>
-                <input type="text" class="form-input" id="branch" placeholder="Enter branch (e.g., Computer Science and Engineering)" required>
+                <input type="text" class="form-input" id="branch" placeholder="Enter branch" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label">Phone Number *</label>
-                <input type="tel" class="form-input" id="phoneNumber" placeholder="Enter phone number (e.g., 9585738235)" required>
+                <input type="tel" class="form-input" id="phoneNumber" placeholder="Enter 10-digit phone number" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label">Semester *</label>
-                <input type="number" class="form-input" id="semester" placeholder="Enter semester (e.g., 3)" min="1" max="8" required>
+                <input type="number" class="form-input" id="semester" placeholder="Enter semester (1-8)" min="1" max="8" required>
             </div>
 
             <div class="form-group">
@@ -63,27 +63,14 @@
                 <label class="form-label">Subjects</label>
                 <div class="select-wrapper">
                     <select class="form-select" id="subjectSelect" onchange="addSubject()">
-                        <option value="">Select subject name</option>
+                        <option value="">Select subject to add...</option>
                         <option value="DSA101">Data Structures and Algorithms</option>
                         <option value="OOP201">Object Oriented Programming</option>
                         <option value="DBMS301">Database Management System</option>
                         <option value="CN401">Computer Networks</option>
                         <option value="OS501">Operating Systems</option>
                         <option value="SE601">Software Engineering</option>
-                        <option value="MATH101">Mathematics</option>
-                        <option value="PHY101">Physics</option>
-                        <option value="CHEM101">Chemistry</option>
-                        <option value="DECO201">Digital Electronics</option>
-                        <option value="MP301">Microprocessors</option>
-                        <option value="CA401">Computer Architecture</option>
-                        <option value="AI501">Artificial Intelligence</option>
-                        <option value="ML501">Machine Learning</option>
-                        <option value="WD701">Web Development</option>
-                        <option value="MAD801">Mobile App Development</option>
-                        <option value="PY101">Python Programming</option>
-                        <option value="JAVA201">Java Programming</option>
-                        <option value="CPP301">C++ Programming</option>
-                        <option value="DS401">Data Science</option>
+                        <!-- Add other subjects as needed -->
                     </select>
                 </div>
                 <div class="selected-subjects" id="selectedSubjects">
@@ -91,20 +78,18 @@
                 </div>
             </div>
 
-            <div id="errorMessage" class="error-message" style="display: none; color: #dc3545; margin-top: 10px; font-size: 14px;"></div>
-            <div id="successMessage" class="success-message" style="display: none; color: #28a745; margin-top: 10px; font-size: 14px;"></div>
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
 
             <div class="btn-group">
                 <button type="submit" class="btn-primary" id="saveBtn">
                     Save Changes
                 </button>
-                <!-- <button type="button" class="btn-secondary" onclick="logout(event)">
-                    🚪 Logout
-                </button> -->
             </div>
         </form>
     </div>
 
+    <!-- The 'type="module"' is crucial for using import/export -->
     <script src="script.js" type="module"></script>
 </body>
 </html>
