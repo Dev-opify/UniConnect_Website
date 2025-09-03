@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showSuccess('registerSuccess', 'Account created! Redirecting...');
                 // The onAuthStateChanged listener will handle the redirect automatically.
                 // We add a delay for the user to see the success message.
-                setTimeout(() => window.location.href = '/dashboard', 2000);
+                setTimeout(() => window.location.href = '/profile', 2000);
 
             } catch (error) {
                 console.error("Registration Error:", error);
