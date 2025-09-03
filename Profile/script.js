@@ -12,7 +12,7 @@ const subjectMapping = {
      'C_0101': 'Programming in C' ,
      'COM_0101': 'Communication Skills for Engineers' ,
      'PHY_0101': 'Physics' ,
-     'EVS_0101': 'Enbironmental Studies' ,
+     'EVS_0101': 'Environmental Studies' ,
      'MATHS_0101': 'Mathematics 1' ,
      'DECO_0102': 'Digital Electronics and Computer Organisation' ,
      'DSA_0102': 'Data Structure and Algo' ,
