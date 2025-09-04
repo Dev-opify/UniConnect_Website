@@ -83,5 +83,248 @@
     <!-- Scripts are now loaded as modules -->
     <script src="/firebase-config.js" type="module"></script>
     <script src="/Dashboard/script.js" type="module"></script>
+
+        <!-- Chatbot Window -->
+    <div id="chatbot-container" class="chatbot-closed">
+    <div id="chatbot-header">
+        <span>Ana 🤖</span>
+        <button id="close-btn" aria-label="Close chat">&times;</button>
+    </div>
+    <div id="chatbot-messages"></div>
+    <div id="chatbot-input-area">
+        <input type="text" id="chatbot-input" placeholder="Type your message...">
+        <button id="send-btn" aria-label="Send">➤</button>
+    </div>
+    </div>
+
+    <!-- Floating Chat Bubble -->
+    <div id="chatbot-bubble" aria-label="Open chat" role="button">💬</div>
+
+    <style>
+        /* Chatbot UI Styling */
+        #chatbot-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 320px;
+            height: 420px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        #chatbot-header {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #chatbot-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.bot img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .message-text {
+            background: #f1f1f1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 70%;
+        }
+
+        .message.user .message-text {
+            background: #4CAF50;
+            color: white;
+        }
+
+        /* Typing animation */
+        .typing {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-style: italic;
+            color: #666;
+        }
+        .typing span {
+            width: 6px;
+            height: 6px;
+            background: #666;
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 1.4s infinite;
+        }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes blink {
+            0%, 80%, 100% { opacity: 0; }
+            40% { opacity: 1; }
+        }
+
+        #chatbot-input-area {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+        #chatbot-input {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            outline: none;
+        }
+        #send-btn {
+            padding: 8px 12px;
+            background: #4CAF50;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Floating bubble */
+        #chatbot-bubble {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            font-size: 24px;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease-in-out;
+            z-index: 1000;
+        }
+        #chatbot-bubble:hover { transform: scale(1.1); }
+    </style>
+
+    <script>
+        window.addEventListener("load", () => {
+            const bubble = document.getElementById("chatbot-bubble");
+            const chatbot = document.getElementById("chatbot-container");
+            const closeBtn = document.getElementById("close-btn");
+            const sendBtn = document.getElementById("send-btn");
+            const input = document.getElementById("chatbot-input");
+            const messages = document.getElementById("chatbot-messages");
+
+            // Open chatbot
+            bubble.addEventListener("click", () => {
+                chatbot.style.display = "flex";
+                bubble.style.display = "none";
+
+                if (!chatbot.dataset.greeted) {
+                    addBotMessage("👋 Hi, I’m Ana! How can I help you today?");
+                    chatbot.dataset.greeted = "true";
+                }
+            });
+
+            // Close chatbot
+            closeBtn.addEventListener("click", () => {
+                chatbot.style.display = "none";
+                bubble.style.display = "block";
+            });
+
+            // Send message
+            function sendMessage() {
+                const userText = input.value.trim();
+                if (!userText) return;
+
+                addUserMessage(userText);
+                input.value = "";
+
+                // Show typing animation
+                const typingDiv = addTyping();
+
+                fetch("https://uniconnect-rltc.onrender.com/chat", { 
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: userText })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    typingDiv.remove();
+                    addBotMessage(data.reply);
+                })
+                .catch(err => {
+                    typingDiv.remove();
+                    addBotMessage("⚠️ Error connecting to server.");
+                    console.error(err);
+                });
+            }
+
+            sendBtn.addEventListener("click", sendMessage);
+            input.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") sendMessage();
+            });
+
+            // Add user message
+            function addUserMessage(text) {
+                const div = document.createElement("div");
+                div.className = "message user";
+                div.innerHTML = `<div class="message-text">${text}</div>`;
+                messages.appendChild(div);
+                messages.scrollTop = messages.scrollHeight;
+            }
+
+            // Add bot message
+            function addBotMessage(text) {
+                const div = document.createElement("div");
+                div.className = "message bot";
+                div.innerHTML = `
+                    <img src="/Chatbot 2.0/static/img/ana-avatar.png" alt="Ana">
+                    <div class="message-text">${text}</div>
+                `;
+                messages.appendChild(div);
+                messages.scrollTop = messages.scrollHeight;
+            }
+
+            // Typing animation
+            function addTyping() {
+                const div = document.createElement("div");
+                div.className = "message bot typing";
+                div.innerHTML = `
+                    <img src="/Chatbot 2.0/static/img/ana-avatar.png" alt="Ana">
+                    <div class="message-text">
+                        Ana is typing <span></span><span></span><span></span>
+                    </div>
+                `;
+                messages.appendChild(div);
+                messages.scrollTop = messages.scrollHeight;
+                return div;
+            }
+        });
+    </script>
+
+
+
+
+
 </body>
 </html>
