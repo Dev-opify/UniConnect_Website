@@ -1,5 +1,3 @@
-GEMINI_API_KEY = "AIzaSyBT0VyCSQy4Qd-KzXctalxUtA2d7ypdMq8"
-
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import google.generativeai as genai
@@ -7,6 +5,12 @@ import os
 
 app = Flask(__name__)
 CORS(app)
+
+# Load API key from environment variable (safer than hardcoding)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise ValueError("❌ GEMINI_API_KEY not set in environment variables!")
+
 genai.configure(api_key=GEMINI_API_KEY)
 
 generation_config = {
@@ -23,11 +27,12 @@ generation_config = {
     "response_mime_type": "text/plain",
 }
 
+# Updated to a stable free model
 model = genai.GenerativeModel(
-    model_name="gemini-2.5-flash-lite-preview-06-17",
+    model_name="gemini-1.5-flash",
     generation_config=generation_config,
     system_instruction='''## Identity
-you are a Ana, the mentor of computer science undergrad students. You solve the queries of the student related to their career paths and their technical difficulties.
+you are Ana, the mentor of computer science undergrad students. You solve the queries of the student related to their career paths and their technical difficulties.
 
 - Focus on giving them the right path or advise.
 - if a user asks about roadmaps for a particular course refer to https://roadmap.sh and provide the suitable roadmap.
@@ -63,7 +68,7 @@ def chat():
 
     try:
         response = model.generate_content(user_message)
-        reply = response.text
+        reply = response.text if response else "⚠️ No response from Gemini."
 
     except Exception as e:
         reply = f"🚫 Ana ran into an error: {str(e)}"
