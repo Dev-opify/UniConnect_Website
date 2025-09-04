@@ -8,7 +8,8 @@ const firebaseConfig = {
     projectId: "uniconnect-a880a",
     storageBucket: "uniconnect-a880a.firebasestorage.app",
     messagingSenderId: "358941920538",
-    appId: "1:358941920538:web:7b2da20230edcf1a61b0a3"
+    appId: "1:358941920538:web:7b2da20230edcf1a61b0a3",
+    measurementId: "G-C8MKB6QL9N"
 };
 
 // Initialize Firebase
